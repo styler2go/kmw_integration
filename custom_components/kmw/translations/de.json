@@ -1,0 +1,88 @@
+{
+    "config": {        "abort": {
+            "already_configured": "Dieser Standort ist bereits konfiguriert."
+        },        "error": {
+            "no_data": "Konnte keine Prognosedaten abrufen. Bitte überprüfe deinen API-Schlüssel und deine Internetverbindung.",
+            "invalid_api_key": "Der eingegebene API-Schlüssel ist ungültig."
+        },
+        "step": {
+            "user": {                "data": {
+                    "api_key": "API-Schlüssel"
+                },
+                "description": "Diese Integration ruft Wetterdaten von der Kachelmann Wetter API ab. Dieser Dienst erfordert einen API-Schlüssel, den du unten eingeben musst.\n\nDie Integration verwendet automatisch die Koordinaten deines Home Assistant-Standorts, um Wetterdaten abzurufen."
+            },
+            "name": {
+                "data": {
+                    "name": "Name"
+                },
+                "description": "Du kannst den Standardnamen der Wetterstation verwenden oder ihn hier ändern."
+            },            "manual": {
+                "data": {
+                    "api_key": "API-Schlüssel",
+                    "name": "Name"
+                },
+                "description": "Diese Integration ruft Wetterdaten von der Kachelmann Wetter API ab. Dieser Dienst erfordert einen API-Schlüssel, den du unten eingeben musst."
+            },
+            "options": {
+                "data": {
+                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
+                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
+                },
+                "description": "Du kannst das später im Konfigurationsdialog ändern."
+            },
+            "options_no_measurement": {
+                "data": {
+                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
+                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
+                },
+                "description": "Du kannst das später im Konfigurationsdialog ändern.\n\nDiese Station liefert keine Messdaten, daher sind deine Optionen eingeschränkt. Du kannst diese Station trotzdem verwenden, aber echte Messdaten sind gewöhnlich besser."
+            },
+            "options_no_forecast": {
+                "data": {
+                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
+                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
+                },
+                "description": "Du kannst das später im Konfigurationsdialog ändern.\n\nDiese Station liefert keine Vorhersagen, daher sind deine Optionen eingeschränkt."
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
+                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
+                }
+            },
+            "init_no_measurement": {
+                "data": {
+                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
+                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
+                },
+                "description": "Diese Station liefert keine Messdaten, daher sind deine Optionen eingeschränkt."
+            },
+            "init_no_forecast": {
+                "data": {
+                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
+                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
+                },
+                "description": "Diese Station liefert keine Vorhersagen, daher sind deine Optionen eingeschränkt."
+            }
+        }
+    },
+    "selector": {
+        "station": {
+            "options": {
+                "nostation_custom": "Benutzerdefiniert...",
+                "nostation_load_all": "Alle laden (könnte langsam sein)..."
+            }
+        },
+        "current_weather": {
+            "options": {
+                "measurement": "Nur Messdaten (empfohlen)",
+                "hybrid": "Messdaten mit Vorhersagedaten für die aktuelle Stunde für Attribute für die keine Messdaten verfügbar sind",
+                "forecast": "Nur Vorhersagedaten (nur für Stationen empfohlen, die überhaupt keine Messdaten liefern)"
+            }
+        }
+    }
+}

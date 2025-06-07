@@ -1,0 +1,90 @@
+{
+  "config": {    "abort": {
+      "already_configured": "This location is already configured."
+    },    "error": {
+      "no_data": "Could not get forecast data. Please verify your API key and internet connection.",
+      "invalid_api_key": "The API key you entered is not valid."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "api_key": "API Key"
+        },
+        "description": "This integration fetches weather data from the Kachelmann Wetter API service. This service requires an API key that you need to enter below.\n\nThe integration will automatically use your Home Assistant's location coordinates to fetch weather data."
+      },
+      "name": {
+        "data": {
+          "name": "Name"
+        },
+        "description": "You can keep the default name of the station or change it here."
+      },
+      "manual": {
+        "data": {
+          "station_id": "Station ID",
+          "name": "Name"
+        },
+        "description": "This integration fetches weather data from the Kachelmann Wetter API service. This service requires an API key that you need to enter below."
+      },
+      "options": {
+        "data": {
+          "current_weather": "Which data shall be used as the current weather?",
+          "forecast": "Do you want to have forecast data (recommended)?"
+        },
+        "description": "You can change this later in the configuration dialog."
+      },
+      "options_no_measurement": {
+        "data": {
+          "current_weather": "Which data shall be used as the current weather?",
+          "forecast": "Do you want to have forecast data (recommended)?"
+        },
+        "description": "You can change this later in the configuration dialog.\n\nThis station does not provide measurement data, therefore your options are limited. You may still use this station, but real measurement data is usually better."
+      },
+      "options_no_forecast": {
+        "data": {
+          "current_weather": "Which data shall be used as the current weather?",
+          "forecast": "Do you want to have forecast data (recommended)?"
+        },
+        "description": "You can change this later in the configuration dialog.\n\nThis station does not provide forecast data, therefore your options are limited."
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "current_weather": "Which data shall be used as the current weather?",
+          "forecast": "Do you want to have forecast data (recommended)?"
+        }
+      },
+      "init_no_measurement": {
+        "data": {
+          "current_weather": "Which data shall be used as the current weather?",
+          "forecast": "Do you want to have forecast data (recommended)?"
+        },
+        "description": "This station does not provide measurement data, therefore your options are limited."
+      },
+      "init_no_forecast": {
+        "data": {
+          "current_weather": "Which data shall be used as the current weather?",
+          "forecast": "Do you want to have forecast data (recommended)?"
+        },
+        "description": "This station does not provide forecast data, therefore your options are limited."
+      }
+    }
+  },
+  "selector": {
+    "station": {
+      "options": {
+        "nostation_custom": "Custom...",
+        "nostation_load_all": "Load all (might be slow)..."
+      }
+    },
+    "current_weather": {
+      "options": {
+        "measurement": "Measurement data only (recommended)",
+        "hybrid": "Measurement data with forecast data for current hour as fallback for attributes where no measurement data is available",
+        "forecast": "Forecast data only (recommended only for stations that do not provide measurement data at all)"
+      }
+    }
+  }
+}
