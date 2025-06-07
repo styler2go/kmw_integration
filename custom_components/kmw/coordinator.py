@@ -73,15 +73,15 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
                 current_weather = await self.async_fetch_current_weather(
                     latitude, longitude, api_key
                 )
-            else:
-                forecast_data = None
-                forecast_hourly = None
-                current_weather = None
-
-            return {
-                "forecast": forecast_data,
-                "forecast_hourly": forecast_hourly,
-                "current": current_weather,
+                return {
+                    "forecast": forecast_data,
+                    "forecast_hourly": forecast_hourly,
+                    "current": current_weather,
+                }
+            return {  # noqa: TRY300
+                "forecast": None,
+                "forecast_hourly": None,
+                "current": None,
             }
 
         except Exception as err:

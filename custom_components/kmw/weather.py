@@ -3,13 +3,10 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime
 from enum import Enum
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.weather import (
-    ATTR_CONDITION_CLEAR_NIGHT,
-    ATTR_CONDITION_SUNNY,
     ATTR_FORECAST_CLOUD_COVERAGE,
     ATTR_FORECAST_CONDITION,
     ATTR_FORECAST_NATIVE_PRECIPITATION,
@@ -40,9 +37,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_registry as er
-from homeassistant.helpers import sun
 from homeassistant.helpers.device_registry import DeviceEntryType
-from homeassistant.util import dt as dt_util
 
 from .const import (
     ATTRIBUTION,
