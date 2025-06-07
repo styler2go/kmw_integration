@@ -1,5 +1,6 @@
 {
     "name": "KMW - KachelmannWetter",
     "homeassistant": "2025.2.4",
-    "hacs": "2.0.1"
+    "hacs": "2.0.1",
+    "version": "0.1.0"
 }
