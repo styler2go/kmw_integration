@@ -34,7 +34,7 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: Callable[[list[SensorEntity]], None],
 ) -> None:
-    """Set up Kachelmann Wetter sensors from a config entry."""
+    """Set up sensors from a config entry."""
     coordinator: KmwDataUpdateCoordinator = _get_coordinator(config_entry)
     unique_id = config_entry.unique_id or "kmw_default"
     sensors = [
@@ -64,7 +64,7 @@ async def async_setup_entry(
 
 
 class KmwTempSensor(SensorEntity):
-    """Sensor for Kachelmann Wetter temperature."""
+    """Sensor for temperature."""
 
     _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
@@ -74,7 +74,7 @@ class KmwTempSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_temp"
-        self._attr_name = "Kachelmann Wetter Temperatur"
+        self._attr_name = "Temperatur"
 
     @property
     def native_value(self) -> float | None:
@@ -86,7 +86,7 @@ class KmwTempSensor(SensorEntity):
 
 
 class KmwTempMaxSensor(SensorEntity):
-    """Sensor for Kachelmann Wetter max temperature."""
+    """Sensor for max temperature."""
 
     _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
@@ -96,7 +96,7 @@ class KmwTempMaxSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_tempmax"
-        self._attr_name = "Kachelmann Wetter Tageshöchsttemperatur"
+        self._attr_name = "Tageshöchsttemperatur"
 
     @property
     def native_value(self) -> float | None:
@@ -108,7 +108,7 @@ class KmwTempMaxSensor(SensorEntity):
 
 
 class KmwRiskSensor(SensorEntity):
-    """Sensor for Kachelmann Wetter risks."""
+    """Sensor for risks."""
 
     _attr_entity_category = EntityCategory.DIAGNOSTIC
 
@@ -116,7 +116,7 @@ class KmwRiskSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_risk"
-        self._attr_name = "Kachelmann Wetter Risiken"
+        self._attr_name = "Risiken"
 
     @property
     def native_value(self) -> str | None:
@@ -148,7 +148,7 @@ class KmwCurrentTempSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_temp"
-        self._attr_name = "Kachelmann Wetter Temperatur (aktuell)"
+        self._attr_name = "Temperatur (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -167,7 +167,7 @@ class KmwCurrentDewpointSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_dewpoint"
-        self._attr_name = "Kachelmann Wetter Taupunkt (aktuell)"
+        self._attr_name = "Taupunkt (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -186,7 +186,7 @@ class KmwCurrentHumiditySensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_humidity"
-        self._attr_name = "Kachelmann Wetter Luftfeuchte (aktuell)"
+        self._attr_name = "Luftfeuchte (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -205,7 +205,7 @@ class KmwCurrentPrecipSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_prec1h"
-        self._attr_name = "Kachelmann Wetter Niederschlag 1h (aktuell)"
+        self._attr_name = "Niederschlag 1h (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -224,7 +224,7 @@ class KmwCurrentPressureSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_pressure"
-        self._attr_name = "Kachelmann Wetter Luftdruck (aktuell)"
+        self._attr_name = "Luftdruck (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -243,7 +243,7 @@ class KmwCurrentSunHoursSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_sunhours"
-        self._attr_name = "Kachelmann Wetter Sonnenstunden (aktuell)"
+        self._attr_name = "Sonnenstunden (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -262,7 +262,7 @@ class KmwCurrentCloudCoverageSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_cloudcoverage"
-        self._attr_name = "Kachelmann Wetter Bewölkung (aktuell)"
+        self._attr_name = "Bewölkung (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -281,7 +281,7 @@ class KmwCurrentSnowAmountSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_snowamount"
-        self._attr_name = "Kachelmann Wetter Schneemenge (aktuell)"
+        self._attr_name = "Schneemenge (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -300,7 +300,7 @@ class KmwCurrentSnowHeightSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_snowheight"
-        self._attr_name = "Kachelmann Wetter Schneehöhe (aktuell)"
+        self._attr_name = "Schneehöhe (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -319,7 +319,7 @@ class KmwCurrentWindSpeedSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_windspeed"
-        self._attr_name = "Kachelmann Wetter Windgeschwindigkeit (aktuell)"
+        self._attr_name = "Windgeschwindigkeit (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -338,7 +338,7 @@ class KmwCurrentWindDirectionSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_winddir"
-        self._attr_name = "Kachelmann Wetter Windrichtung (aktuell)"
+        self._attr_name = "Windrichtung (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -357,7 +357,7 @@ class KmwCurrentWindGustSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_windgust"
-        self._attr_name = "Kachelmann Wetter Windböe (aktuell)"
+        self._attr_name = "Windböe (aktuell)"
 
     @property
     def native_value(self) -> float | None:
@@ -375,7 +375,7 @@ class KmwCurrentWmoCodeSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_wmocode"
-        self._attr_name = "Kachelmann Wetter WMO-Code (aktuell)"
+        self._attr_name = "WMO-Code (aktuell)"
 
     @property
     def native_value(self) -> int | None:
@@ -393,7 +393,7 @@ class KmwCurrentWeatherSymbolSensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_weathersymbol"
-        self._attr_name = "Kachelmann Wetter Wettersymbol (aktuell)"
+        self._attr_name = "Wettersymbol (aktuell)"
 
     @property
     def native_value(self) -> str | None:
@@ -411,7 +411,7 @@ class KmwCurrentIsDaySensor(SensorEntity):
         """Initialize the sensor."""
         self._coordinator = coordinator
         self._attr_unique_id = f"{unique_id}_current_isday"
-        self._attr_name = "Kachelmann Wetter Tag/Nacht (aktuell)"
+        self._attr_name = "Tag/Nacht (aktuell)"
 
     @property
     def native_value(self) -> bool | None:
