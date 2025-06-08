@@ -202,7 +202,7 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         if not temp:
             return None
 
-        return temp["value"]
+        return CONDITIONS_MAP.get(temp["value"])
 
     @property
     def native_temperature(self) -> float | None:
@@ -304,6 +304,9 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
 
         data = current_day_data.get("prec1h")
         if not data:
+            return None
+
+        if data["value"] == 0.0:
             return None
 
         return data["value"]
