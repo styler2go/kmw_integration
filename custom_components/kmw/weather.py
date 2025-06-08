@@ -197,10 +197,12 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         current_day_data = self._get_current_data()
         if not current_day_data:
             return None
-        weather_symbol = current_day_data.get(KMW_WEATHER_SYMBOL)
-        if weather_symbol:
-            return CONDITIONS_MAP.get(weather_symbol["value"])
-        return None
+
+        temp = current_day_data.get("weatherSymbol")
+        if not temp:
+            return None
+
+        return temp["value"]
 
     @property
     def native_temperature(self) -> float | None:
