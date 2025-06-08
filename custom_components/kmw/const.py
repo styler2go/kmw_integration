@@ -63,7 +63,18 @@ CONDITIONS_MAP = {
     "snow": ATTR_CONDITION_SNOWY,
     "snowrain": ATTR_CONDITION_SNOWY_RAINY,
     "sunshine": ATTR_CONDITION_SUNNY,
-    "overcast": ATTR_CONDITION_WINDY,
+    "overcast": ATTR_CONDITION_CLOUDY,
+    "partlycloudy2": ATTR_CONDITION_PARTLYCLOUDY,
+    "showers_light": ATTR_CONDITION_RAINY,  # leichter Schauer
+    "showers_rain_light": ATTR_CONDITION_RAINY,  # leichter Regenschauer
+    "rain_light": ATTR_CONDITION_RAINY,  # leichter Regen
+    "rain_moderate": ATTR_CONDITION_RAINY,  # mäßiger Regen
+    "snowrainshowers": ATTR_CONDITION_SNOWY_RAINY,  # Schneeregen-Schauer
+    "snowrainshowersheavy": ATTR_CONDITION_SNOWY_RAINY,  # starker Schneeregen-Schauer
+    "snowrainheavy": ATTR_CONDITION_SNOWY_RAINY,  # starker Schneeregen
+    "snowshowers": ATTR_CONDITION_SNOWY,  # Schneeschauer
+    "snowshowersheavy": ATTR_CONDITION_SNOWY,  # starker Schneeschauer
+    "snowheavy": ATTR_CONDITION_SNOWY,  # starker Schnee
 }
 
 # Forecast-Daten-Key
