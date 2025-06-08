@@ -4,9 +4,11 @@ import logging
 from datetime import timedelta
 
 from homeassistant.components.weather import (
+    ATTR_CONDITION_CLEAR_NIGHT,
     ATTR_CONDITION_CLOUDY,
     ATTR_CONDITION_FOG,
     ATTR_CONDITION_HAIL,
+    ATTR_CONDITION_LIGHTNING,
     ATTR_CONDITION_LIGHTNING_RAINY,
     ATTR_CONDITION_PARTLYCLOUDY,
     ATTR_CONDITION_POURING,
@@ -49,19 +51,19 @@ KMW_MEASUREMENT_DATETIME = "datetime"
 
 # Mapping for Kachelmann Wetter weather symbols
 CONDITIONS_MAP = {
-    "clearnight": ATTR_CONDITION_SUNNY,  # Clear night (special case for night)
-    "sunshine": ATTR_CONDITION_SUNNY,
-    "partlycloudy": ATTR_CONDITION_PARTLYCLOUDY,
+    "sunshine_night": ATTR_CONDITION_CLEAR_NIGHT,
     "cloudy": ATTR_CONDITION_CLOUDY,
     "fog": ATTR_CONDITION_FOG,
-    "showers": ATTR_CONDITION_RAINY,
-    "rain": ATTR_CONDITION_POURING,
-    "snowshowers": ATTR_CONDITION_SNOWY,
-    "snow": ATTR_CONDITION_SNOWY,
-    "sleet": ATTR_CONDITION_SNOWY_RAINY,
     "hail": ATTR_CONDITION_HAIL,
-    "thunderstorm": ATTR_CONDITION_LIGHTNING_RAINY,
-    "windy": ATTR_CONDITION_WINDY,
+    "thunderstorm": ATTR_CONDITION_LIGHTNING,
+    "rainheavy": ATTR_CONDITION_LIGHTNING_RAINY,
+    "partlycloudy": ATTR_CONDITION_PARTLYCLOUDY,
+    "showersheavy": ATTR_CONDITION_POURING,
+    "showers_moderate": ATTR_CONDITION_RAINY,
+    "snow": ATTR_CONDITION_SNOWY,
+    "snowrain": ATTR_CONDITION_SNOWY_RAINY,
+    "sunshine": ATTR_CONDITION_SUNNY,
+    "overcast": ATTR_CONDITION_WINDY,
 }
 
 # Forecast-Daten-Key
