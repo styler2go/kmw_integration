@@ -18,7 +18,7 @@ from .coordinator import KmwDataUpdateCoordinator
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SCHEMA = cv.empty_config_schema(DOMAIN)
-PLATFORMS = [Platform.WEATHER]
+PLATFORMS = [Platform.WEATHER, Platform.SENSOR]
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
@@ -31,9 +31,6 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     config_entry.runtime_data = coordinator
 
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(config_entry, "sensor")
-    )
     return True
 
 
