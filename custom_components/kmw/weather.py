@@ -191,6 +191,19 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
 
         return current_data[KMW_FORECAST_DATA]
 
+    def _get_condition_from_weather_symbol(
+        self, weather_symbol: str, is_day: bool
+    ) -> str | None:
+        """Get weather condition from weather symbol and day/night status."""
+        if not weather_symbol:
+            return None
+
+        # Special handling for sunshine at night
+        if not is_day and weather_symbol == "sunshine":
+            return CONDITIONS_MAP.get("sunshine_night")
+
+        return CONDITIONS_MAP.get(weather_symbol)
+
     @property
     def condition(self) -> str | None:
         """Return the current condition."""
@@ -198,11 +211,10 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         if not current_day_data:
             return None
 
-        temp = current_day_data.get("weatherSymbol")
-        if not temp:
-            return None
-
-        return CONDITIONS_MAP.get(temp["value"])
+        return self._get_condition_from_weather_symbol(
+            current_day_data.get("weatherSymbol", {}).get("value"),
+            current_day_data.get("isDay", True),
+        )
 
     @property
     def native_temperature(self) -> float | None:
@@ -364,8 +376,10 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
             }
             weather_symbol = day_data.get(KMW_WEATHER_SYMBOL)
             if weather_symbol:
-                forecast_item[ATTR_FORECAST_CONDITION] = CONDITIONS_MAP.get(
-                    weather_symbol
+                forecast_item[ATTR_FORECAST_CONDITION] = (
+                    self._get_condition_from_weather_symbol(
+                        weather_symbol, day_data.get("isDay", True)
+                    )
                 )
             result.append(forecast_item)
         return result
@@ -385,7 +399,9 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
                 ATTR_FORECAST_NATIVE_WIND_SPEED: hour.get("windSpeed"),
                 ATTR_FORECAST_NATIVE_WIND_GUST_SPEED: hour.get("windGust"),
                 ATTR_FORECAST_WIND_BEARING: hour.get("windDirection"),
-                ATTR_FORECAST_CONDITION: CONDITIONS_MAP.get(hour.get("weatherSymbol")),
+                ATTR_FORECAST_CONDITION: self._get_condition_from_weather_symbol(
+                    hour.get("weatherSymbol"), hour.get("isDay", True)
+                ),
                 "pressure_msl": hour.get("pressureMsl"),
                 "humidity_relative": hour.get("humidityRelative"),
                 "dewpoint": hour.get("dewpoint"),
