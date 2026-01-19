@@ -15,7 +15,8 @@ Mit dieser Integration kannst du Wetterdaten von Kachelmann Wetter direkt in Hom
 3. Folge dem Dialog und gib deinen persönlichen API Key ein.
 
 ## API Key
-Du benötigst einen kostenlosen API Key von [Kachelmann Wetter](https://api.kachelmannwetter.com/v02/_doc.html). Registriere dich dort und trage den Key bei der Einrichtung ein.
+Du benötigst einen API Key von [Kachelmann Wetter](https://api.kachelmannwetter.com/v02/_doc.html).
+Dafür benötigst du ein kostenpflichtiges Plus-Abonnement um auf die API zugreifen zu können und API-Keys zu verwalten.
 
 ---
 **Hinweis:** Diese Integration ist inoffiziell und steht in keiner Verbindung zu Kachelmann Wetter.
