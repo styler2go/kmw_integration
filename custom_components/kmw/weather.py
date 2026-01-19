@@ -213,7 +213,7 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
 
         return self._get_condition_from_weather_symbol(
             current_day_data.get("weatherSymbol", {}).get("value"),
-            current_day_data.get("isDay", True),
+            current_day_data.get("isDay", {}).get("value"),
         )
 
     @property
