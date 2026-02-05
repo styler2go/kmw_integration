@@ -9,11 +9,14 @@ from typing import TYPE_CHECKING, Any
 from homeassistant.components.weather import (
     ATTR_FORECAST_CLOUD_COVERAGE,
     ATTR_FORECAST_CONDITION,
+    ATTR_FORECAST_DEW_POINT,
+    ATTR_FORECAST_HUMIDITY,
     ATTR_FORECAST_NATIVE_PRECIPITATION,
     ATTR_FORECAST_NATIVE_TEMP,
     ATTR_FORECAST_NATIVE_TEMP_LOW,
     ATTR_FORECAST_NATIVE_WIND_GUST_SPEED,
     ATTR_FORECAST_NATIVE_WIND_SPEED,
+    ATTR_FORECAST_PRESSURE,
     ATTR_FORECAST_PRECIPITATION_PROBABILITY,
     ATTR_FORECAST_TIME,
     ATTR_FORECAST_WIND_BEARING,
@@ -38,6 +41,7 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceEntryType
+from homeassistant.util import dt as dt_util
 
 from .const import (
     ATTRIBUTION,
@@ -302,7 +306,7 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         if not current_day_data:
             return None
 
-        data = current_day_data.get("prec1h")
+        data = current_day_data.get("precCurrent") or current_day_data.get("prec1h")
         if not data:
             return None
 
@@ -310,6 +314,49 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
             return None
 
         return data["value"]
+
+    @property
+    def native_dew_point(self) -> float | None:
+        """Return the dew point in native units."""
+        current_day_data = self._get_current_data()
+        if not current_day_data:
+            return None
+
+        data = current_day_data.get("dewpoint")
+        if not data:
+            return None
+
+        return data["value"]
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return extra state attributes for the current weather."""
+        current_day_data = self._get_current_data()
+        if not current_day_data:
+            return {}
+
+        def _value(key: str) -> Any | None:
+            value = current_day_data.get(key)
+            if isinstance(value, dict):
+                return value.get("value")
+            return value
+
+        return {
+            "dewpoint": _value("dewpoint"),
+            "pressure_msl": _value("pressureMsl"),
+            "humidity_relative": _value("humidityRelative"),
+            "wind_speed": _value("windSpeed"),
+            "wind_direction": _value("windDirection"),
+            "wind_gust": _value("windGust"),
+            "wind_gust_3h": _value("windGust3h"),
+            "cloud_coverage": _value("cloudCoverage"),
+            "sun_hours": _value("sunHours"),
+            "prec_current": _value("precCurrent"),
+            "prec_6h": _value("prec6h"),
+            "snow_amount": _value("snowAmount"),
+            "snow_height": _value("snowHeight"),
+            "weather_symbol": _value("weatherSymbol"),
+        }
 
     @property
     def sun_hours(self) -> float | None:
@@ -352,14 +399,33 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
                 ATTR_FORECAST_NATIVE_WIND_GUST_SPEED: day_data.get(KMW_WIND_GUST),
                 ATTR_FORECAST_WIND_BEARING: day_data.get(KMW_WIND_DIRECTION),
                 ATTR_FORECAST_CLOUD_COVERAGE: day_data.get(KMW_CLOUD_COVERAGE),
+                "is_weekend": day_data.get("isWeekend"),
+                "weekday": day_data.get("weekday"),
+                "temp_max_low": day_data.get("tempMaxLow"),
+                "temp_max_high": day_data.get("tempMaxHigh"),
+                "temp_min_low": day_data.get("tempMinLow"),
+                "temp_min_high": day_data.get("tempMinHigh"),
+                "prec_low": day_data.get("precLow"),
+                "prec_high": day_data.get("precHigh"),
                 "precipitation_probability_1mm": (
                     day_data.get(KMW_PRECIPITATION_PROBABILITY_1MM)
                 ),
                 "precipitation_probability_10mm": (
                     day_data.get(KMW_PRECIPITATION_PROBABILITY_10MM)
                 ),
+                "prec_type": day_data.get("precType"),
+                "prec_intensity": day_data.get("precIntensity"),
+                "prec_word": day_data.get("precWord"),
                 "sun_hours": day_data.get(KMW_SUN_HOURS),
+                "sun_hours_relative": day_data.get("sunHoursRelative"),
+                "sun_hours_low": day_data.get("sunHoursLow"),
+                "sun_hours_high": day_data.get("sunHoursHigh"),
+                "sun_max_pos": day_data.get("sunMaxPos"),
                 "weather_symbol": day_data.get(KMW_WEATHER_SYMBOL),
+                "wind_gust_low": day_data.get("windGustLow"),
+                "wind_gust_high": day_data.get("windGustHigh"),
+                "cloud_word": day_data.get("cloudWord"),
+                "thunderstorm": day_data.get("thunderStorm"),
                 "risks": day_data.get(KMW_RISKS, []),
             }
             weather_symbol = day_data.get(KMW_WEATHER_SYMBOL)
@@ -373,20 +439,69 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
     @callback
     def _async_forecast_hourly(self) -> list[dict[str, Any]] | None:
         """Return the hourly forecast in native units."""
-        forecast_data = self.coordinator.data.get("forecast_hourly")
-        if not forecast_data or not forecast_data.get("data"):
+        forecast_data_1h = self.coordinator.data.get("forecast_hourly")
+        forecast_data_3h = self.coordinator.data.get("forecast_hourly_3h")
+        data_1h = (forecast_data_1h or {}).get("data") or []
+        data_3h = (forecast_data_3h or {}).get("data") or []
+        if not data_1h and not data_3h:
             return None
+
+        def _parse_time(value: str | None) -> dt_util.dt.datetime | None:
+            if not value:
+                return None
+            try:
+                return dt_util.parse_datetime(value)
+            except ValueError:
+                return None
+
+        merged: list[dict[str, Any]] = []
+        seen_times: set[str] = set()
+        data_1h_sorted = sorted(
+            (item for item in data_1h if item.get("dateTime")),
+            key=lambda item: _parse_time(item.get("dateTime")) or dt_util.utcnow(),
+        )
+        for item in data_1h_sorted:
+            merged.append(item)
+            seen_times.add(item.get("dateTime"))
+
+        last_1h_time = None
+        if data_1h_sorted:
+            last_1h_time = _parse_time(data_1h_sorted[-1].get("dateTime"))
+
+        data_3h_sorted = sorted(
+            (item for item in data_3h if item.get("dateTime")),
+            key=lambda item: _parse_time(item.get("dateTime")) or dt_util.utcnow(),
+        )
+        for item in data_3h_sorted:
+            dt_value = _parse_time(item.get("dateTime"))
+            if not dt_value:
+                continue
+            if last_1h_time and dt_value <= last_1h_time:
+                continue
+            if item.get("dateTime") in seen_times:
+                continue
+            merged.append(item)
+            seen_times.add(item.get("dateTime"))
         return [
             {
                 ATTR_FORECAST_TIME: hour.get("dateTime"),
                 ATTR_FORECAST_NATIVE_TEMP: hour.get("temp"),
+                ATTR_FORECAST_DEW_POINT: hour.get("dewpoint"),
+                ATTR_FORECAST_PRESSURE: hour.get("pressureMsl"),
+                ATTR_FORECAST_HUMIDITY: hour.get("humidityRelative"),
                 ATTR_FORECAST_NATIVE_PRECIPITATION: hour.get("precCurrent"),
                 ATTR_FORECAST_CLOUD_COVERAGE: hour.get("cloudCoverage"),
                 ATTR_FORECAST_NATIVE_WIND_SPEED: hour.get("windSpeed"),
                 ATTR_FORECAST_NATIVE_WIND_GUST_SPEED: hour.get("windGust"),
                 ATTR_FORECAST_WIND_BEARING: hour.get("windDirection"),
                 ATTR_FORECAST_CONDITION: CONDITIONS_MAP.get(hour.get("weatherSymbol")),
+                "is_day": hour.get("isDay"),
+                "temp_min_6h": hour.get("tempMin6h"),
+                "temp_max_6h": hour.get("tempMax6h"),
+                "temp_min_12h": hour.get("tempMin12h"),
+                "temp_max_12h": hour.get("tempMax12h"),
                 "pressure_msl": hour.get("pressureMsl"),
+                "pressure": hour.get("pressureMsl"),
                 "humidity_relative": hour.get("humidityRelative"),
                 "dewpoint": hour.get("dewpoint"),
                 "cloud_coverage_low": hour.get("cloudCoverageLow"),
@@ -398,11 +513,19 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
                 "prec_12h": hour.get("prec12h"),
                 "prec_24h": hour.get("prec24h"),
                 "prec_total": hour.get("precTotal"),
+                "rainMin": hour.get("precCurrent"),
+                "rainMax": hour.get("precCurrent"),
+                "rain_min": hour.get("precCurrent"),
+                "rain_max": hour.get("precCurrent"),
                 "snow_amount": hour.get("snowAmount"),
+                "snow_amount_6h": hour.get("snowAmount6h"),
+                "snow_amount_12h": hour.get("snowAmount12h"),
+                "snow_amount_24h": hour.get("snowAmount24h"),
                 "snow_height": hour.get("snowHeight"),
                 "wmo_code": hour.get("wmoCode"),
+                "weather_symbol": hour.get("weatherSymbol"),
             }
-            for hour in forecast_data["data"]
+            for hour in merged
         ]
 
     @property

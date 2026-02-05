@@ -61,6 +61,7 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
 
             forecast_data = None
             forecast_hourly = None
+            forecast_hourly_3h = None
             current_weather = None
 
             if conf_forecast:
@@ -68,7 +69,10 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
                     latitude, longitude, api_key
                 )
                 forecast_hourly = await self.async_fetch_hourly_forecast(
-                    latitude, longitude, api_key
+                    latitude, longitude, api_key, "1h"
+                )
+                forecast_hourly_3h = await self.async_fetch_hourly_forecast(
+                    latitude, longitude, api_key, "3h"
                 )
                 current_weather = await self.async_fetch_current_weather(
                     latitude, longitude, api_key
@@ -76,11 +80,13 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
                 return {
                     "forecast": forecast_data,
                     "forecast_hourly": forecast_hourly,
+                    "forecast_hourly_3h": forecast_hourly_3h,
                     "current": current_weather,
                 }
             return {  # noqa: TRY300
                 "forecast": None,
                 "forecast_hourly": None,
+                "forecast_hourly_3h": None,
                 "current": None,
             }
 
@@ -104,10 +110,13 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
         raise UpdateFailed(msg)
 
     async def async_fetch_hourly_forecast(
-        self, latitude: float, longitude: float, api_key: str
+        self, latitude: float, longitude: float, api_key: str, time_steps: str
     ) -> dict | None:
         """Fetch hourly forecast data from Kachelmann Wetter API."""
-        url = f"https://api.kachelmannwetter.com/v02/forecast/{latitude}/{longitude}/advanced/1h"
+        url = (
+            "https://api.kachelmannwetter.com/v02/forecast/"
+            f"{latitude}/{longitude}/advanced/{time_steps}"
+        )
         headers = {
             "Accept": "application/json",
             "X-API-Key": api_key,
