@@ -174,7 +174,7 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         self._attr_native_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_native_pressure_unit = UnitOfPressure.HPA
         self._attr_native_visibility_unit = UnitOfLength.KILOMETERS
-        self._attr_native_wind_speed_unit = UnitOfSpeed.KILOMETERS_PER_HOUR
+        self._attr_native_wind_speed_unit = UnitOfSpeed.METERS_PER_SECOND
         self._attr_native_precipitation_unit = UnitOfLength.MILLIMETERS
 
         self._attr_attribution = ATTRIBUTION
