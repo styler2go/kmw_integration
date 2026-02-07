@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import enum
 import logging
 from enum import Enum
-from symtable import Symbol
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.weather import (
