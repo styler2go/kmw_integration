@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import enum
 import logging
 from enum import Enum
+from symtable import Symbol
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.weather import (
@@ -78,6 +80,22 @@ AFTERNOON_START = 12
 AFTERNOON_END = 17
 EVENING_START = 17
 EVENING_END = 22
+
+
+class DayNight(Enum):
+    """Day or night phase."""
+
+    DAY = "day"
+    NIGHT = "night"
+
+
+class WeatherConditionInput:
+    """Input parameters for weather condition mapping."""
+
+    def __init__(self, symbol: str, day_night: DayNight) -> None:
+        """Initialize weather condition input."""
+        self.symbol = symbol
+        self.day_night = day_night
 
 
 class ForecastMode(Enum):
@@ -196,17 +214,20 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         return current_data[KMW_FORECAST_DATA]
 
     def _get_condition_from_weather_symbol(
-        self, weather_symbol: str, is_day: bool
+        self, weather_condition_input: WeatherConditionInput
     ) -> str | None:
         """Get weather condition from weather symbol and day/night status."""
-        if not weather_symbol:
+        if not weather_condition_input.symbol:
             return None
 
         # Special handling for sunshine at night
-        if not is_day and weather_symbol == "sunshine":
+        if (
+            weather_condition_input.day_night != DayNight.DAY
+            and weather_condition_input.symbol == "sunshine"
+        ):
             return CONDITIONS_MAP.get("sunshine_night")
 
-        return CONDITIONS_MAP.get(weather_symbol)
+        return CONDITIONS_MAP.get(weather_condition_input.symbol)
 
     @property
     def condition(self) -> str | None:
@@ -215,9 +236,13 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         if not current_day_data:
             return None
 
+        is_day = current_day_data.get("isDay", {}).get("value")
+        weather_symbol = current_day_data.get("weatherSymbol", {}).get("value")
+
         return self._get_condition_from_weather_symbol(
-            current_day_data.get("weatherSymbol", {}).get("value"),
-            current_day_data.get("isDay", {}).get("value"),
+            WeatherConditionInput(
+                weather_symbol, DayNight.DAY if is_day else DayNight.NIGHT
+            )
         )
 
     @property
@@ -442,9 +467,12 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
             }
             weather_symbol = day_data.get(KMW_WEATHER_SYMBOL)
             if weather_symbol:
+                is_day = day_data.get("isDay", True)
                 forecast_item[ATTR_FORECAST_CONDITION] = (
                     self._get_condition_from_weather_symbol(
-                        weather_symbol, day_data.get("isDay", True)
+                        WeatherConditionInput(
+                            weather_symbol, DayNight.DAY if is_day else DayNight.NIGHT
+                        )
                     )
                 )
             result.append(forecast_item)
@@ -509,7 +537,10 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
                 ATTR_FORECAST_NATIVE_WIND_GUST_SPEED: hour.get("windGust"),
                 ATTR_FORECAST_WIND_BEARING: hour.get("windDirection"),
                 ATTR_FORECAST_CONDITION: self._get_condition_from_weather_symbol(
-                    hour.get("weatherSymbol"), hour.get("isDay", True)
+                    WeatherConditionInput(
+                        hour.get("weatherSymbol"),
+                        DayNight.DAY if hour.get("isDay", True) else DayNight.NIGHT,
+                    )
                 ),
                 "is_day": hour.get("isDay"),
                 "temp_min_6h": hour.get("tempMin6h"),
