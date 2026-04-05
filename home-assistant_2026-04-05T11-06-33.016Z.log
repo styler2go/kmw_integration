@@ -1,0 +1,401 @@
+s6-rc: info: service s6rc-oneshot-runner: starting
+s6-rc: info: service s6rc-oneshot-runner successfully started
+s6-rc: info: service fix-attrs: starting
+s6-rc: info: service fix-attrs successfully started
+s6-rc: info: service legacy-cont-init: starting
+s6-rc: info: service legacy-cont-init successfully started
+s6-rc: info: service legacy-services: starting
+services-up: info: copying legacy longrun home-assistant (no readiness notification)
+s6-rc: info: service legacy-services successfully started
+2026-04-05 12:49:00.814 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration bambu_lab which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.814 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration dwd which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.814 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration ipixel_color which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.815 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration watchman which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.815 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration midea_ac which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.815 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration animated_scenes which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.816 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration slack_user which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.816 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration fints4 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.816 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration xiaomi_cloud_map_extractor which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.817 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration xiaomi_miot which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.817 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration better_thermostat which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.817 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration freekiosk which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.818 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration kmw which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.818 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration populartimes which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.818 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration localtuya which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.818 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration simple_timer which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.819 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration spook_inverse which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.819 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration frigate which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.819 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration spook which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.820 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.820 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration dash_cast which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.820 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration adaptive_lighting which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.820 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration scene_presets which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.821 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration waste_collection_schedule which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.821 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration xiaomi_home which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.821 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration donetick which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.822 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration ui_lovelace_minimalist which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.822 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration tuya_local which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.822 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration twitch_eventsub which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.822 ERROR (SyncWorker_0) [homeassistant.loader] The custom integration 'twitch_eventsub' does not have a version key in the manifest file and was blocked from loading. See https://developers.home-assistant.io/blog/2021/01/29/custom-integration-changes#versions for more details
+2026-04-05 12:49:00.823 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration ble_monitor which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:00.823 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-04-05 12:49:03.986 ERROR (MainThread) [homeassistant.config_entries] Error setting up entry homewayio for google_assistant
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/config_entries.py", line 769, in __async_setup_with_context
+    result = await component.async_setup_entry(hass, self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/google_assistant/__init__.py", line 123, in async_setup_entry
+    config: ConfigType = {**hass.data[DOMAIN][DATA_CONFIG]}
+                            ~~~~~~~~~^^^^^^^^
+KeyError: 'google_assistant'
+2026-04-05 12:49:05.891 INFO (MainThread) [Jellyfin] ---[ START JELLYFINCLIENT ]---
+2026-04-05 12:49:11.260 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:49:11.261 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:49:12.952 ERROR (MainThread) [custom_components.ui_lovelace_minimalist.base] HACS Frontend repo "light-entity-card" is already installed, Remove it or disable include custom cards
+2026-04-05 12:49:12.952 ERROR (MainThread) [custom_components.ui_lovelace_minimalist.base] HACS Frontend repo "lovelace-auto-entities" is already installed, Remove it or disable include custom cards
+2026-04-05 12:49:12.952 ERROR (MainThread) [custom_components.ui_lovelace_minimalist.base] HACS Frontend repo "mini-graph-card" is already installed, Remove it or disable include custom cards
+2026-04-05 12:49:12.970 ERROR (MainThread) [custom_components.ui_lovelace_minimalist.base] HACS Frontend repo "my-cards" is already installed, Remove it or disable include custom cards
+2026-04-05 12:49:12.987 ERROR (MainThread) [custom_components.ui_lovelace_minimalist.base] HACS Frontend repo "lovelace-layout-card" is already installed, Remove it or disable include custom cards
+2026-04-05 12:49:15.853 INFO (SyncWorker_9) [custom_components.fints4.client] Auto-selecting TAN mechanism: 923 (pushTAN 2.0)
+2026-04-05 12:49:16.285 INFO (SyncWorker_9) [custom_components.fints4.client] Auto-selected TAN medium: fints.formals.TANMedia4(tan_medium_class=fints.formals.TANMediaClass3.ALL, status=fints.formals.TANMediumStatus.ACTIVE, tan_medium_name='Alle Geräte')
+2026-04-05 12:49:17.295 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:17.295 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:17.405 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:17.406 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:17.489 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:17.490 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:17.490 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator] Transactions for DE58507500940009622836: 1 booked, 0 pending
+2026-04-05 12:49:17.712 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:17.712 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:17.839 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:17.839 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:17.988 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:17.988 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:17.990 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator] Transactions for DE32507500940027435414: 7 booked, 1 pending
+2026-04-05 12:49:17.990 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator]   Pending: 2026-04-07 -13.47 EUR — PayPal Europe S.a.r.l. et Cie S.C.A
+2026-04-05 12:49:18.203 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:18.203 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:18.431 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:18.431 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:18.566 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:18.567 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:18.573 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator] Transactions for DE91507500940027436389: 34 booked, 3 pending
+2026-04-05 12:49:18.573 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator]   Pending: 2026-04-07 -22.9 EUR — PayPal Europe S.a.r.l. et Cie S.C.A
+2026-04-05 12:49:18.573 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator]   Pending: 2026-04-07 -11.92 EUR — PayPal Europe S.a.r.l. et Cie S.C.A
+2026-04-05 12:49:18.573 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator]   Pending: 2026-04-08 -100.0 EUR — Münch Energie GmbH & Co. KG
+2026-04-05 12:49:18.775 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:18.775 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:18.854 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:18.855 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:18.926 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:18.926 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:18.926 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator] Transactions for DE16507500940027612921: 0 booked, 0 pending
+2026-04-05 12:49:19.050 ERROR (Thread-3 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 12:49:19.102 WARNING (MainThread) [homeassistant.components.onkyo.media_player] Listening mode "DOLBY ATMOS/DOLBY SURROUND ··· PLII/PLIIx MOVIE" for entity: media_player.tx_nr676e is not in the list. Check integration options
+2026-04-05 12:49:19.124 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:19.124 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:19.183 ERROR (Thread-5 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 12:49:19.176 ERROR (Thread-9 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 12:49:19.192 ERROR (Thread-7 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 12:49:19.210 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:19.210 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:19.233 WARNING (MainThread) [homeassistant.components.onkyo.media_player] Input source "MAIN SOURCE" for entity: media_player.tx_nr676e_zone_2 is not in the list. Check integration options
+2026-04-05 12:49:19.351 WARNING (SyncWorker_1) [fints.client] Dialog response: 3060 - Bitte beachten Sie die enthaltenen Warnungen/Hinweise.
+2026-04-05 12:49:19.351 WARNING (SyncWorker_1) [fints.client] Dialog response: 3076 - Starke Kundenauthentifizierung nicht notwendig.
+2026-04-05 12:49:19.352 DEBUG (SyncWorker_1) [custom_components.fints4.coordinator] Transactions for DE78507500940027616752: 1 booked, 0 pending
+2026-04-05 12:49:19.431 DEBUG (MainThread) [custom_components.fints4.coordinator] Finished fetching FinTS 50750094 data in 2.619 seconds (success: True)
+2026-04-05 12:49:19.542 DEBUG (MainThread) [custom_components.fints4.sensor] Creating sensors for account DE58507500940009622836 (bank 50750094)
+2026-04-05 12:49:19.543 DEBUG (MainThread) [custom_components.fints4.sensor] Creating sensors for account DE32507500940027435414 (bank 50750094)
+2026-04-05 12:49:19.543 DEBUG (MainThread) [custom_components.fints4.sensor] Creating sensors for account DE91507500940027436389 (bank 50750094)
+2026-04-05 12:49:19.543 DEBUG (MainThread) [custom_components.fints4.sensor] Creating sensors for account DE16507500940027612921 (bank 50750094)
+2026-04-05 12:49:19.543 DEBUG (MainThread) [custom_components.fints4.sensor] Creating sensors for account DE78507500940027616752 (bank 50750094)
+2026-04-05 12:49:23.019 ERROR (MainThread) [homeassistant.components.automation] Platform automation does not generate unique IDs. ID morning_briefing_ai_weather_todo_calendar already exists - ignoring automation.morgenbriefing_ki_wetter_todos_kalender
+2026-04-05 12:49:23.019 ERROR (MainThread) [homeassistant.components.automation] Platform automation does not generate unique IDs. ID morning_briefing_ai_weather_todo_calendar already exists - ignoring automation.morgenbriefing_ki_wetter_todos_kalender
+2026-04-05 12:49:23.019 ERROR (MainThread) [homeassistant.components.automation] Platform automation does not generate unique IDs. ID morning_briefing_ai_weather_todo_calendar already exists - ignoring automation.morgenbriefing_ki_wetter_todos_kalender
+2026-04-05 12:49:23.198 WARNING (MainThread) [homeassistant.components.onkyo.media_player] Listening mode "DOLBY ATMOS/DOLBY SURROUND ··· PLII/PLIIx MOVIE" for entity: media_player.tx_nr676e is not in the list. Check integration options
+2026-04-05 12:49:23.743 WARNING (MainThread) [homeassistant.components.sensor] Entity sensor.xiaomi_iv2001_4e2d_battery_level (<class 'custom_components.xiaomi_miot.sensor.SensorEntity'>) is using native unit of measurement 'None' which is not a valid unit for the device class ('battery') it is using; expected one of ['%']; Please update your configuration if your entity is manually configured, otherwise create a bug report at https://github.com/al-one/hass-xiaomi-miot/issues
+2026-04-05 12:49:23.945 WARNING (MainThread) [switchbot.devices.device] None (FF:4E:62:89:D2:94): Device unexpectedly disconnected; RSSI: -78
+2026-04-05 12:49:53.293 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template<template=({{ (states('sensor.draussen_temperatur_2') | float - states('sensor.kachelmann_wetter_temperatur_aktuell') | float) | abs }}) renders=2>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template/__init__.py", line 1617, in forgiving_float_filter
+    return float(value)
+ValueError: could not convert string to float: 'unknown'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template/__init__.py", line 465, in async_render
+    render_result = render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template/context.py", line 45, in render_with_context
+    return template.render(**kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.14/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/src/homeassistant/homeassistant/helpers/template/__init__.py", line 1620, in forgiving_float_filter
+    raise_no_default("float", value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/template/helpers.py", line 24, in raise_no_default
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Template error: float got invalid input 'unknown' when rendering template '{{ (states('sensor.draussen_temperatur_2') | float - states('sensor.kachelmann_wetter_temperatur_aktuell') | float) | abs }}' but no default was specified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template/__init__.py", line 583, in async_render_to_info
+    render_info._result = self.async_render(  # noqa: SLF001
+                          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+        variables, strict=strict, log_fn=log_fn, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/helpers/template/__init__.py", line 467, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: ValueError: Template error: float got invalid input 'unknown' when rendering template '{{ (states('sensor.draussen_temperatur_2') | float - states('sensor.kachelmann_wetter_temperatur_aktuell') | float) | abs }}' but no default was specified
+2026-04-05 12:49:53.297 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('ValueError: Template error: float got invalid input 'unknown' when rendering template '{{ (states('sensor.draussen_temperatur_2') | float - states('sensor.kachelmann_wetter_temperatur_aktuell') | float) | abs }}' but no default was specified') while processing template 'Template<template=({{ (states('sensor.draussen_temperatur_2') | float - states('sensor.kachelmann_wetter_temperatur_aktuell') | float) | abs }}) renders=4>' for attribute '_attr_native_value' in entity 'number.tempdiff'
+2026-04-05 12:49:53.673 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:49:53.673 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:50:03.834 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:50:03.834 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:50:24.228 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:50:24.229 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:51:04.703 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:51:04.703 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:51:18.139 ERROR (MainThread) [robotti] []
+2026-04-05 12:52:24.883 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:52:24.883 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:53:45.307 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:53:45.308 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:54:33.209 ERROR (Thread-37 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 12:55:05.492 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:55:05.493 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:56:25.757 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:56:25.757 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:57:45.835 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:57:45.836 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:59:06.073 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:59:06.073 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 12:59:33.121 ERROR (Thread-41 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 12:59:46.039 ERROR (Thread-43 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 13:00:26.448 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:00:26.448 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:01:46.680 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:01:46.680 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:03:06.954 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:03:06.954 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:04:27.443 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:04:27.443 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:04:59.168 ERROR (Thread-45 (_recv_loop)) [root] Uncaught thread exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.14/threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/pychrome/tab.py", line 122, in _recv_loop
+    message = json.loads(message_json)
+  File "/usr/local/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-04-05 13:05:43.507 ERROR (MainThread) [aiohttp.server] Error handling request from 192.168.178.5
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.14/site-packages/aiohttp/web_protocol.py", line 517, in _handle_request
+    resp = await request_handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/aiohttp/web_app.py", line 569, in _handle
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/aiohttp/web_middlewares.py", line 117, in impl
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/security_filter.py", line 92, in security_filter_middleware
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/forwarded.py", line 214, in forwarded_middleware
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/request_context.py", line 26, in request_context_middleware
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/ban.py", line 90, in ban_middleware
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/auth.py", line 295, in auth_middleware
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/headers.py", line 41, in headers_middleware
+    response = await handler(request)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/http.py", line 89, in handle
+    result = await handler(request, **request.match_info)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/decorators.py", line 83, in with_admin
+    return await func(self, request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/config/config_entries.py", line 272, in post
+    return await super().post(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/http/data_validator.py", line 74, in wrapper
+    return await method(view, request, data, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/data_entry_flow.py", line 76, in post
+    return await self._post_impl(request, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/data_entry_flow.py", line 83, in _post_impl
+    result = await self._flow_mgr.async_init(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/data_entry_flow.py", line 306, in async_init
+    flow = await self.async_create_flow(handler, context=context, data=data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/config_entries.py", line 3773, in async_create_flow
+    return handler.async_get_options_flow(entry)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/config/custom_components/kmw/config_flow.py", line 78, in async_get_options_flow
+    return KmwOptionsFlowHandler(config_entry)
+  File "/config/custom_components/kmw/config_flow.py", line 95, in __init__
+    self.config_entry = config_entry
+    ^^^^^^^^^^^^^^^^^
+AttributeError: property 'config_entry' of 'KmwOptionsFlowHandler' object has no setter
+2026-04-05 13:05:47.719 ERROR (MainThread) [custom_components.ipixel_color.bluetooth.client] Unexpected error connecting to 95:DF:24:CC:EF:62: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
+2026-04-05 13:05:47.719 ERROR (MainThread) [custom_components.ipixel_color] Failed to connect to iPIXEL device 95:DF:24:CC:EF:62: Connection failed: Device 95:DF:24:CC:EF:62 not found. Ensure the device is powered on and in range.
