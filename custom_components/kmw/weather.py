@@ -9,21 +9,18 @@ from typing import TYPE_CHECKING, Any
 from homeassistant.components.weather import (
     ATTR_FORECAST_CLOUD_COVERAGE,
     ATTR_FORECAST_CONDITION,
-    ATTR_FORECAST_DEW_POINT,
     ATTR_FORECAST_HUMIDITY,
+    ATTR_FORECAST_NATIVE_DEW_POINT,
     ATTR_FORECAST_NATIVE_PRECIPITATION,
+    ATTR_FORECAST_NATIVE_PRESSURE,
     ATTR_FORECAST_NATIVE_TEMP,
     ATTR_FORECAST_NATIVE_TEMP_LOW,
     ATTR_FORECAST_NATIVE_WIND_GUST_SPEED,
     ATTR_FORECAST_NATIVE_WIND_SPEED,
     ATTR_FORECAST_PRECIPITATION_PROBABILITY,
-    ATTR_FORECAST_PRESSURE,
     ATTR_FORECAST_TIME,
     ATTR_FORECAST_WIND_BEARING,
     SingleCoordinatorWeatherEntity,
-)
-from homeassistant.components.weather.const import (
-    DOMAIN as WEATHER_DOMAIN,
 )
 from homeassistant.components.weather.const import (
     WeatherEntityFeature,
@@ -32,6 +29,8 @@ from homeassistant.components.weather.const import (
 if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+    from . import KmwRuntimeData
 from homeassistant.const import (
     UnitOfLength,
     UnitOfPressure,
@@ -39,18 +38,13 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import entity_registry as er
-from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.util import dt as dt_util
 
 from .const import (
     ATTRIBUTION,
     CONDITIONS_MAP,
-    CONF_CURRENT_WEATHER,
-    CONF_CURRENT_WEATHER_DEFAULT,
     CONF_FORECAST,
     CONF_FORECAST_DEFAULT,
-    DOMAIN,
     KMW_CLOUD_COVERAGE,
     KMW_DATETIME,
     KMW_FORECAST_DATA,
@@ -66,9 +60,6 @@ from .const import (
     KMW_WIND_GUST,
 )
 from .coordinator import KmwDataUpdateCoordinator
-
-if TYPE_CHECKING:
-    from homeassistant.helpers.device_registry import DeviceInfo
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -108,49 +99,27 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    """Add a weather entity from a config_entry."""
-    coordinator: KmwDataUpdateCoordinator = config_entry.runtime_data
-    entity_registry = er.async_get(hass)
+    """Add weather entities from a config_entry."""
+    runtime_data: KmwRuntimeData = config_entry.runtime_data
+    entities: list[KachelmannWeather] = []
 
-    device = {
-        "identifiers": {(DOMAIN, config_entry.unique_id)},
-        "name": config_entry.title,
-        "manufacturer": "Kachelmann Wetter",
-        "model": "Weather API",
-        "entry_type": DeviceEntryType.SERVICE,
-    }
-
-    # Remove hourly entity from legacy config entries
-    if hourly_entity_id := entity_registry.async_get_entity_id(
-        WEATHER_DOMAIN,
-        DOMAIN,
-        f"{config_entry.unique_id}-hourly",
-    ):
-        entity_registry.async_remove(hourly_entity_id)
-
-    # Remove daily entity from legacy config entries
-    if daily_entity_id := entity_registry.async_get_entity_id(
-        WEATHER_DOMAIN,
-        DOMAIN,
-        f"{config_entry.unique_id}-daily",
-    ):
-        entity_registry.async_remove(daily_entity_id)
-
-    async_add_entities(
-        [
+    for subentry_id, coordinator in runtime_data.coordinators.items():
+        entities.append(
             KachelmannWeather(
                 hass,
                 coordinator,
-                config_entry.unique_id,
+                subentry_id,
                 config_entry,
-                device,
-            ),
-        ]
-    )
+            )
+        )
+
+    async_add_entities(entities)
 
 
 class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]):
     """Implementation of a Kachelmann Wetter weather condition."""
+
+    _attr_has_entity_name = True
 
     def __init__(
         self,
@@ -158,27 +127,17 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
         coordinator: KmwDataUpdateCoordinator,
         unique_id: str,
         config: ConfigEntry,
-        device: DeviceInfo,
     ) -> None:
         """Initialize."""
         super().__init__(coordinator)
         self._hass: HomeAssistant = hass
         self._attr_unique_id = unique_id
         self._config: ConfigEntry = config
-        self._attr_device_info = device
-        self._conf_current_weather: str = self._config.options.get(
-            CONF_CURRENT_WEATHER, CONF_CURRENT_WEATHER_DEFAULT
-        )
+        self._attr_device_info = coordinator.device_info
 
-        name = self._config.title
-
-        if name is None:
-            name = self.hass.config.location_name
-
-        if name is None:
-            name = "Kachelmann Wetter"
-
-        self._attr_name = name
+        # has_entity_name=True means HA prepends the device name.
+        # Set to None so the entity is just named after the device.
+        self._attr_name = None
 
         self._attr_entity_registry_enabled_default = True
 
@@ -245,7 +204,7 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
 
     @property
     def native_temperature(self) -> float | None:
-        """Return the temperature in native units (Tageshöchstwert)."""
+        """Return the temperature in native units."""
         current_day_data = self._get_current_data()
         if not current_day_data:
             return None
@@ -271,7 +230,7 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
 
     @property
     def humidity(self) -> float | None:
-        """Return the pressure in native units."""
+        """Return the humidity."""
         current_day_data = self._get_current_data()
         if not current_day_data:
             return None
@@ -284,7 +243,7 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
 
     @property
     def cloud_coverage(self) -> float | None:
-        """Return the pressure in native units."""
+        """Return the cloud coverage."""
         current_day_data = self._get_current_data()
         if not current_day_data:
             return None
@@ -376,22 +335,23 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
                 return value.get("value")
             return value
 
-        return {
-            "dewpoint": _value("dewpoint"),
-            "pressure_msl": _value("pressureMsl"),
-            "humidity_relative": _value("humidityRelative"),
-            "wind_speed": _value("windSpeed"),
-            "wind_direction": _value("windDirection"),
-            "wind_gust": _value("windGust"),
+        attrs = {
+            # Fields NOT already exposed as official HA Weather properties
+            # (temperature, pressure, humidity, wind_speed, wind_direction,
+            #  wind_gust, cloud_coverage, dew_point are already HA properties)
             "wind_gust_3h": _value("windGust3h"),
-            "cloud_coverage": _value("cloudCoverage"),
             "sun_hours": _value("sunHours"),
             "prec_current": _value("precCurrent"),
+            "prec_1h": _value("prec1h"),
             "prec_6h": _value("prec6h"),
             "snow_amount": _value("snowAmount"),
             "snow_height": _value("snowHeight"),
             "weather_symbol": _value("weatherSymbol"),
+            "wmo_code": _value("wmoCode"),
+            "is_day": _value("isDay"),
         }
+        # Remove None values for cleaner output
+        return {k: v for k, v in attrs.items() if v is not None}
 
     @property
     def sun_hours(self) -> float | None:
@@ -494,61 +454,63 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
             except ValueError:
                 return None
 
+        # Pre-parse datetimes to avoid repeated parsing in sort keys
+        epoch = dt_util.utcnow()
+
+        parsed_1h = [
+            (item, _parse_time(item.get(KMW_DATETIME)) or epoch)
+            for item in data_1h
+            if item.get(KMW_DATETIME)
+        ]
+        parsed_1h.sort(key=lambda x: x[1])
+
         merged: list[dict[str, Any]] = []
         seen_times: set[str] = set()
-        data_1h_sorted = sorted(
-            (item for item in data_1h if item.get("dateTime")),
-            key=lambda item: _parse_time(item.get("dateTime")) or dt_util.utcnow(),
-        )
-        for item in data_1h_sorted:
+        for item, _ in parsed_1h:
             merged.append(item)
-            seen_times.add(item.get("dateTime"))
+            seen_times.add(item.get(KMW_DATETIME))
 
-        last_1h_time = None
-        if data_1h_sorted:
-            last_1h_time = _parse_time(data_1h_sorted[-1].get("dateTime"))
+        last_1h_time = parsed_1h[-1][1] if parsed_1h else None
 
-        data_3h_sorted = sorted(
-            (item for item in data_3h if item.get("dateTime")),
-            key=lambda item: _parse_time(item.get("dateTime")) or dt_util.utcnow(),
-        )
-        for item in data_3h_sorted:
-            dt_value = _parse_time(item.get("dateTime"))
-            if not dt_value:
-                continue
+        parsed_3h = [
+            (item, _parse_time(item.get(KMW_DATETIME)) or epoch)
+            for item in data_3h
+            if item.get(KMW_DATETIME)
+        ]
+        parsed_3h.sort(key=lambda x: x[1])
+
+        for item, dt_value in parsed_3h:
             if last_1h_time and dt_value <= last_1h_time:
                 continue
-            if item.get("dateTime") in seen_times:
+            if item.get(KMW_DATETIME) in seen_times:
                 continue
             merged.append(item)
-            seen_times.add(item.get("dateTime"))
+            seen_times.add(item.get(KMW_DATETIME))
         return [
             {
-                ATTR_FORECAST_TIME: hour.get("dateTime"),
-                ATTR_FORECAST_NATIVE_TEMP: hour.get("temp"),
-                ATTR_FORECAST_DEW_POINT: hour.get("dewpoint"),
-                ATTR_FORECAST_PRESSURE: hour.get("pressureMsl"),
-                ATTR_FORECAST_HUMIDITY: hour.get("humidityRelative"),
-                ATTR_FORECAST_NATIVE_PRECIPITATION: hour.get("precCurrent"),
-                ATTR_FORECAST_CLOUD_COVERAGE: hour.get("cloudCoverage"),
-                ATTR_FORECAST_NATIVE_WIND_SPEED: hour.get("windSpeed"),
-                ATTR_FORECAST_NATIVE_WIND_GUST_SPEED: hour.get("windGust"),
-                ATTR_FORECAST_WIND_BEARING: hour.get("windDirection"),
+                # Official HA Forecast fields
+                ATTR_FORECAST_TIME: hour.get(KMW_DATETIME),
                 ATTR_FORECAST_CONDITION: self._get_condition_from_weather_symbol(
                     WeatherConditionInput(
                         hour.get("weatherSymbol"),
                         DayNight.DAY if hour.get("isDay", True) else DayNight.NIGHT,
                     )
                 ),
+                ATTR_FORECAST_NATIVE_TEMP: hour.get("temp"),
+                ATTR_FORECAST_NATIVE_DEW_POINT: hour.get("dewpoint"),
+                ATTR_FORECAST_NATIVE_PRESSURE: hour.get("pressureMsl"),
+                ATTR_FORECAST_HUMIDITY: hour.get("humidityRelative"),
+                ATTR_FORECAST_NATIVE_PRECIPITATION: hour.get("precCurrent"),
+                ATTR_FORECAST_CLOUD_COVERAGE: hour.get("cloudCoverage"),
+                ATTR_FORECAST_NATIVE_WIND_SPEED: hour.get("windSpeed"),
+                ATTR_FORECAST_NATIVE_WIND_GUST_SPEED: hour.get("windGust"),
+                ATTR_FORECAST_WIND_BEARING: hour.get("windDirection"),
+                # Extra fields from advanced forecast endpoint
                 "is_day": hour.get("isDay"),
                 "temp_min_6h": hour.get("tempMin6h"),
                 "temp_max_6h": hour.get("tempMax6h"),
                 "temp_min_12h": hour.get("tempMin12h"),
                 "temp_max_12h": hour.get("tempMax12h"),
-                "pressure_msl": hour.get("pressureMsl"),
-                "pressure": hour.get("pressureMsl"),
-                "humidity_relative": hour.get("humidityRelative"),
-                "dewpoint": hour.get("dewpoint"),
                 "cloud_coverage_low": hour.get("cloudCoverageLow"),
                 "cloud_coverage_medium": hour.get("cloudCoverageMedium"),
                 "cloud_coverage_high": hour.get("cloudCoverageHigh"),
@@ -558,10 +520,6 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
                 "prec_12h": hour.get("prec12h"),
                 "prec_24h": hour.get("prec24h"),
                 "prec_total": hour.get("precTotal"),
-                "rainMin": hour.get("precCurrent"),
-                "rainMax": hour.get("precCurrent"),
-                "rain_min": hour.get("precCurrent"),
-                "rain_max": hour.get("precCurrent"),
                 "snow_amount": hour.get("snowAmount"),
                 "snow_amount_6h": hour.get("snowAmount6h"),
                 "snow_amount_12h": hour.get("snowAmount12h"),

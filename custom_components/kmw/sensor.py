@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
-from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+)
 from homeassistant.const import (
     PERCENTAGE,
     EntityCategory,
@@ -13,20 +18,124 @@ from homeassistant.const import (
     UnitOfSpeed,
     UnitOfTemperature,
 )
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import KMW_FORECAST_DATA, KMW_TEMPERATURE_MAX
+from .coordinator import KmwDataUpdateCoordinator
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.core import HomeAssistant
+    from homeassistant.helpers.device_registry import DeviceInfo
 
-    from .coordinator import KmwDataUpdateCoordinator
+    from . import KmwRuntimeData
 
 
-def _get_coordinator(config_entry: Any) -> KmwDataUpdateCoordinator:
-    return config_entry.runtime_data
+@dataclass(frozen=True, kw_only=True)
+class KmwCurrentSensorDescription(SensorEntityDescription):
+    """Describes a KMW current-weather sensor."""
+
+    api_field: str
+
+
+CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
+    KmwCurrentSensorDescription(
+        key="current_temp",
+        translation_key="current_temp",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        api_field="temp",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_dewpoint",
+        translation_key="current_dewpoint",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        api_field="dewpoint",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_humidity",
+        translation_key="current_humidity",
+        device_class=SensorDeviceClass.HUMIDITY,
+        native_unit_of_measurement=PERCENTAGE,
+        api_field="humidityRelative",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_prec1h",
+        translation_key="current_precip",
+        native_unit_of_measurement="mm",
+        api_field="prec1h",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_pressure",
+        translation_key="current_pressure",
+        device_class=SensorDeviceClass.ATMOSPHERIC_PRESSURE,
+        native_unit_of_measurement=UnitOfPressure.HPA,
+        api_field="pressureMsl",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_sunhours",
+        translation_key="current_sunhours",
+        native_unit_of_measurement="h",
+        api_field="sunHours",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_cloudcoverage",
+        translation_key="current_cloudcoverage",
+        native_unit_of_measurement=PERCENTAGE,
+        api_field="cloudCoverage",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_snowamount",
+        translation_key="current_snowamount",
+        native_unit_of_measurement="mm",
+        api_field="snowAmount",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_snowheight",
+        translation_key="current_snowheight",
+        device_class=SensorDeviceClass.DISTANCE,
+        native_unit_of_measurement=UnitOfLength.MILLIMETERS,
+        api_field="snowHeight",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_windspeed",
+        translation_key="current_windspeed",
+        device_class=SensorDeviceClass.WIND_SPEED,
+        native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
+        api_field="windSpeed",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_winddir",
+        translation_key="current_winddir",
+        native_unit_of_measurement="°",
+        api_field="windDirection",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_windgust",
+        translation_key="current_windgust",
+        device_class=SensorDeviceClass.WIND_SPEED,
+        native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
+        api_field="windGust",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_weathersymbol",
+        translation_key="current_weathersymbol",
+        api_field="weatherSymbol",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_wmocode",
+        translation_key="current_wmocode",
+        api_field="wmoCode",
+    ),
+    KmwCurrentSensorDescription(
+        key="current_isday",
+        translation_key="current_isday",
+        api_field="isDay",
+    ),
+)
 
 
 async def async_setup_entry(
@@ -35,93 +144,113 @@ async def async_setup_entry(
     async_add_entities: Callable[[list[SensorEntity]], None],
 ) -> None:
     """Set up sensors from a config entry."""
-    coordinator: KmwDataUpdateCoordinator = _get_coordinator(config_entry)
-    unique_id = config_entry.unique_id or "kmw_default"
-    sensors = [
-        KmwTempMaxSensor(coordinator, unique_id),
-        KmwRiskSensor(coordinator, unique_id),
-    ]
-    current = coordinator.data.get("current", {})
-    if current and "data" in current:
+    runtime_data: KmwRuntimeData = config_entry.runtime_data
+    sensors: list[SensorEntity] = []
+
+    for subentry_id, coordinator in runtime_data.coordinators.items():
+        device_info = coordinator.device_info
+        sensors.append(KmwTempMaxSensor(coordinator, subentry_id, device_info))
+        sensors.append(KmwRiskSensor(coordinator, subentry_id, device_info))
         sensors.extend(
-            [
-                KmwCurrentTempSensor(coordinator, unique_id),
-                KmwCurrentDewpointSensor(coordinator, unique_id),
-                KmwCurrentHumiditySensor(coordinator, unique_id),
-                KmwCurrentPrecipSensor(coordinator, unique_id),
-                KmwCurrentPressureSensor(coordinator, unique_id),
-                KmwCurrentSunHoursSensor(coordinator, unique_id),
-                KmwCurrentCloudCoverageSensor(coordinator, unique_id),
-                KmwCurrentSnowAmountSensor(coordinator, unique_id),
-                KmwCurrentSnowHeightSensor(coordinator, unique_id),
-                KmwCurrentWindSpeedSensor(coordinator, unique_id),
-                KmwCurrentWindDirectionSensor(coordinator, unique_id),
-                KmwCurrentWindGustSensor(coordinator, unique_id),
-                KmwCurrentWeatherSymbolSensor(coordinator, unique_id),
-            ]
+            KmwCurrentSensor(coordinator, subentry_id, device_info, desc)
+            for desc in CURRENT_SENSOR_DESCRIPTIONS
         )
+
     async_add_entities(sensors)
 
 
-class KmwTempSensor(SensorEntity):
-    """Sensor for temperature."""
+class KmwBaseSensor(CoordinatorEntity[KmwDataUpdateCoordinator], SensorEntity):
+    """Base class for KMW sensors with device_info and auto-updates."""
 
-    _attr_device_class = SensorDeviceClass.TEMPERATURE
-    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
     _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_has_entity_name = True
 
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
+    def __init__(
+        self,
+        coordinator: KmwDataUpdateCoordinator,
+        unique_id: str,  # noqa: ARG002
+        device_info: DeviceInfo,
+    ) -> None:
         """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_temp"
-        self._attr_name = "Temperatur"
+        super().__init__(coordinator)
+        self._attr_device_info = device_info
+
+
+class KmwCurrentSensor(KmwBaseSensor):
+    """Generic sensor for current weather data driven by SensorEntityDescription."""
+
+    entity_description: KmwCurrentSensorDescription
+
+    def __init__(
+        self,
+        coordinator: KmwDataUpdateCoordinator,
+        unique_id: str,
+        device_info: DeviceInfo,
+        description: KmwCurrentSensorDescription,
+    ) -> None:
+        """Initialize the sensor."""
+        self.entity_description = description
+        super().__init__(coordinator, unique_id, device_info)
+        self._attr_unique_id = f"{unique_id}_{description.key}"
 
     @property
-    def native_value(self) -> float | None:
-        """Return the temperature value."""
-        forecast = self._coordinator.data.get("forecast")
-        if forecast and forecast.get(KMW_FORECAST_DATA):
-            return forecast[KMW_FORECAST_DATA][0].get(KMW_TEMPERATURE_MAX)
-        return None
+    def available(self) -> bool:
+        """Return True if current data is available."""
+        current = self.coordinator.data.get("current")
+        return current is not None and "data" in current
+
+    @property
+    def native_value(self) -> Any | None:
+        """Return the sensor value from the current weather data."""
+        data = self.coordinator.data.get("current", {}).get("data", {})
+        return data.get(self.entity_description.api_field, {}).get("value")
 
 
-class KmwTempMaxSensor(SensorEntity):
-    """Sensor for max temperature."""
+class KmwTempMaxSensor(KmwBaseSensor):
+    """Sensor for max temperature from daily forecast."""
 
     _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_translation_key = "tempmax"
 
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
+    def __init__(
+        self,
+        coordinator: KmwDataUpdateCoordinator,
+        unique_id: str,
+        device_info: DeviceInfo,
+    ) -> None:
         """Initialize the sensor."""
-        self._coordinator = coordinator
+        super().__init__(coordinator, unique_id, device_info)
         self._attr_unique_id = f"{unique_id}_tempmax"
-        self._attr_name = "Tageshöchsttemperatur"
 
     @property
     def native_value(self) -> float | None:
         """Return the max temperature value."""
-        forecast = self._coordinator.data.get("forecast")
+        forecast = self.coordinator.data.get("forecast")
         if forecast and forecast.get(KMW_FORECAST_DATA):
             return forecast[KMW_FORECAST_DATA][0].get(KMW_TEMPERATURE_MAX)
         return None
 
 
-class KmwRiskSensor(SensorEntity):
-    """Sensor for risks."""
+class KmwRiskSensor(KmwBaseSensor):
+    """Sensor for risks from daily forecast."""
 
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_translation_key = "risk"
 
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
+    def __init__(
+        self,
+        coordinator: KmwDataUpdateCoordinator,
+        unique_id: str,
+        device_info: DeviceInfo,
+    ) -> None:
         """Initialize the sensor."""
-        self._coordinator = coordinator
+        super().__init__(coordinator, unique_id, device_info)
         self._attr_unique_id = f"{unique_id}_risk"
-        self._attr_name = "Risiken"
 
     @property
     def native_value(self) -> str | None:
         """Return the risk types as a comma-separated string."""
-        forecast = self._coordinator.data.get("forecast")
+        forecast = self.coordinator.data.get("forecast")
         if forecast and forecast.get(KMW_FORECAST_DATA):
             risks = forecast[KMW_FORECAST_DATA][0].get("risks", [])
             if risks:
@@ -131,290 +260,7 @@ class KmwRiskSensor(SensorEntity):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra state attributes for the sensor."""
-        forecast = self._coordinator.data.get("forecast")
+        forecast = self.coordinator.data.get("forecast")
         if forecast and forecast.get(KMW_FORECAST_DATA):
             return {"risks": forecast[KMW_FORECAST_DATA][0].get("risks", [])}
         return {}
-
-
-class KmwCurrentTempSensor(SensorEntity):
-    """Sensor for current temperature from Kachelmann Wetter."""
-
-    _attr_device_class = SensorDeviceClass.TEMPERATURE
-    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_temp"
-        self._attr_name = "Temperatur (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current temperature value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("temp", {}).get("value")
-
-
-class KmwCurrentDewpointSensor(SensorEntity):
-    """Sensor for current dewpoint from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_dewpoint"
-        self._attr_name = "Taupunkt (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current dewpoint value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("dewpoint", {}).get("value")
-
-
-class KmwCurrentHumiditySensor(SensorEntity):
-    """Sensor for current relative humidity from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = PERCENTAGE
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_humidity"
-        self._attr_name = "Luftfeuchte (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current humidity value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("humidityRelative", {}).get("value")
-
-
-class KmwCurrentPrecipSensor(SensorEntity):
-    """Sensor for current precipitation (1h) from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = "mm"
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_prec1h"
-        self._attr_name = "Niederschlag 1h (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current precipitation value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("prec1h", {}).get("value")
-
-
-class KmwCurrentPressureSensor(SensorEntity):
-    """Sensor for current pressure (MSL) from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = UnitOfPressure.HPA
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_pressure"
-        self._attr_name = "Luftdruck (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current pressure value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("pressureMsl", {}).get("value")
-
-
-class KmwCurrentSunHoursSensor(SensorEntity):
-    """Sensor for current sun hours from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = "h"
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_sunhours"
-        self._attr_name = "Sonnenstunden (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current sun hours value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("sunHours", {}).get("value")
-
-
-class KmwCurrentCloudCoverageSensor(SensorEntity):
-    """Sensor for current cloud coverage from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = PERCENTAGE
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_cloudcoverage"
-        self._attr_name = "Bewölkung (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current cloud coverage value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("cloudCoverage", {}).get("value")
-
-
-class KmwCurrentSnowAmountSensor(SensorEntity):
-    """Sensor for current snow amount from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = "mm"
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_snowamount"
-        self._attr_name = "Schneemenge (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current snow amount value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("snowAmount", {}).get("value")
-
-
-class KmwCurrentSnowHeightSensor(SensorEntity):
-    """Sensor for current snow height from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = UnitOfLength.MILLIMETERS
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_snowheight"
-        self._attr_name = "Schneehöhe (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current snow height value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("snowHeight", {}).get("value")
-
-
-class KmwCurrentWindSpeedSensor(SensorEntity):
-    """Sensor for current wind speed from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = UnitOfSpeed.METERS_PER_SECOND
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_windspeed"
-        self._attr_name = "Windgeschwindigkeit (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current wind speed value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("windSpeed", {}).get("value")
-
-
-class KmwCurrentWindDirectionSensor(SensorEntity):
-    """Sensor for current wind direction from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = "°"
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_winddir"
-        self._attr_name = "Windrichtung (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current wind direction value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("windDirection", {}).get("value")
-
-
-class KmwCurrentWindGustSensor(SensorEntity):
-    """Sensor for current wind gust from Kachelmann Wetter."""
-
-    _attr_native_unit_of_measurement = UnitOfSpeed.METERS_PER_SECOND
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_windgust"
-        self._attr_name = "Windböe (aktuell)"
-
-    @property
-    def native_value(self) -> float | None:
-        """Return the current wind gust value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("windGust", {}).get("value")
-
-
-class KmwCurrentWmoCodeSensor(SensorEntity):
-    """Sensor for current WMO code from Kachelmann Wetter."""
-
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_wmocode"
-        self._attr_name = "WMO-Code (aktuell)"
-
-    @property
-    def native_value(self) -> int | None:
-        """Return the current WMO code value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("wmoCode", {}).get("value")
-
-
-class KmwCurrentWeatherSymbolSensor(SensorEntity):
-    """Sensor for current weather symbol from Kachelmann Wetter."""
-
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_weathersymbol"
-        self._attr_name = "Wettersymbol (aktuell)"
-
-    @property
-    def native_value(self) -> str | None:
-        """Return the current weather symbol value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("weatherSymbol", {}).get("value")
-
-
-class KmwCurrentIsDaySensor(SensorEntity):
-    """Sensor for current isDay flag from Kachelmann Wetter."""
-
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator: KmwDataUpdateCoordinator, unique_id: str) -> None:
-        """Initialize the sensor."""
-        self._coordinator = coordinator
-        self._attr_unique_id = f"{unique_id}_current_isday"
-        self._attr_name = "Tag/Nacht (aktuell)"
-
-    @property
-    def native_value(self) -> bool | None:
-        """Return the current isDay value."""
-        data = self._coordinator.data.get("current", {}).get("data", {})
-        return data.get("isDay", {}).get("value")

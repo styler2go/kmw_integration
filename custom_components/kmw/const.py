@@ -31,10 +31,9 @@ CONF_FORECAST_DEFAULT = True
 CONF_MODEL = "model"
 CONF_MODEL_DEFAULT = "SWISS1X1"
 
-# URL für 14-Tage-Trend
-URL_3DAY_FORECAST = (
-    "https://api.kachelmannwetter.com/v02/forecast/{lat}/{lon}/trend14days"
-)
+CONF_LATITUDE = "latitude"
+CONF_LONGITUDE = "longitude"
+SUBENTRY_TYPE_LOCATION = "location"
 
 UPDATE_INTERVAL = timedelta(seconds=610)
 
@@ -104,4 +103,4 @@ KMW_TOD_EVENING = "evening"
 SOURCE_STATIONSLEXIKON = 0
 SOURCE_MOSMIX_STATIONSKATALOG = 1
 
-_LOGGER = logging.getLogger(".")
+_LOGGER = logging.getLogger(__name__)

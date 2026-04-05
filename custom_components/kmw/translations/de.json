@@ -1,88 +1,65 @@
 {
-    "config": {        "abort": {
-            "already_configured": "Dieser Standort ist bereits konfiguriert."
-        },        "error": {
-            "no_data": "Konnte keine Prognosedaten abrufen. Bitte überprüfe deinen API-Schlüssel und deine Internetverbindung.",
-            "invalid_api_key": "Der eingegebene API-Schlüssel ist ungültig."
-        },
-        "step": {
-            "user": {                "data": {
-                    "api_key": "API-Schlüssel"
-                },
-                "description": "Diese Integration ruft Wetterdaten von der Kachelmann Wetter API ab. Dieser Dienst erfordert einen API-Schlüssel, den du unten eingeben musst.\n\nDie Integration verwendet automatisch die Koordinaten deines Home Assistant-Standorts, um Wetterdaten abzurufen."
-            },
-            "name": {
-                "data": {
-                    "name": "Name"
-                },
-                "description": "Du kannst den Standardnamen der Wetterstation verwenden oder ihn hier ändern."
-            },            "manual": {
-                "data": {
-                    "api_key": "API-Schlüssel",
-                    "name": "Name"
-                },
-                "description": "Diese Integration ruft Wetterdaten von der Kachelmann Wetter API ab. Dieser Dienst erfordert einen API-Schlüssel, den du unten eingeben musst."
-            },
-            "options": {
-                "data": {
-                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
-                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
-                },
-                "description": "Du kannst das später im Konfigurationsdialog ändern."
-            },
-            "options_no_measurement": {
-                "data": {
-                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
-                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
-                },
-                "description": "Du kannst das später im Konfigurationsdialog ändern.\n\nDiese Station liefert keine Messdaten, daher sind deine Optionen eingeschränkt. Du kannst diese Station trotzdem verwenden, aber echte Messdaten sind gewöhnlich besser."
-            },
-            "options_no_forecast": {
-                "data": {
-                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
-                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
-                },
-                "description": "Du kannst das später im Konfigurationsdialog ändern.\n\nDiese Station liefert keine Vorhersagen, daher sind deine Optionen eingeschränkt."
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Dieser API-Schlüssel ist bereits konfiguriert."
     },
-    "options": {
-        "step": {
-            "init": {
-                "data": {
-                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
-                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
-                }
-            },
-            "init_no_measurement": {
-                "data": {
-                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
-                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
-                },
-                "description": "Diese Station liefert keine Messdaten, daher sind deine Optionen eingeschränkt."
-            },
-            "init_no_forecast": {
-                "data": {
-                    "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
-                    "forecast": "Möchtest du Vorhersagen (empfohlen)?"
-                },
-                "description": "Diese Station liefert keine Vorhersagen, daher sind deine Optionen eingeschränkt."
-            }
-        }
+    "error": {
+      "no_data": "Konnte keine Prognosedaten abrufen. Bitte überprüfe deinen API-Schlüssel und deine Internetverbindung.",
+      "invalid_api_key": "Der eingegebene API-Schlüssel ist ungültig."
     },
-    "selector": {
-        "station": {
-            "options": {
-                "nostation_custom": "Benutzerdefiniert...",
-                "nostation_load_all": "Alle laden (könnte langsam sein)..."
-            }
+    "step": {
+      "user": {
+        "data": {
+          "api_key": "API-Schlüssel"
         },
-        "current_weather": {
-            "options": {
-                "measurement": "Nur Messdaten (empfohlen)",
-                "hybrid": "Messdaten mit Vorhersagedaten für die aktuelle Stunde für Attribute für die keine Messdaten verfügbar sind",
-                "forecast": "Nur Vorhersagedaten (nur für Stationen empfohlen, die überhaupt keine Messdaten liefern)"
-            }
-        }
+        "description": "Diese Integration ruft Wetterdaten von der Kachelmann Wetter API ab. Gib unten deinen API-Schlüssel ein. Nach dem Einrichten kannst du Standorte als Geräte hinzufügen."
+      }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
+          "forecast": "Möchtest du Vorhersagen (empfohlen)?",
+          "model": "Vorhersagemodell"
+        }
+      }
+    }
+  },
+  "config_subentries": {
+    "location": {
+      "entry_type": "Standort",
+      "initiate_flow": {
+        "user": "Standort hinzufügen",
+        "reconfigure": "Standort bearbeiten"
+      },
+      "abort": {
+        "already_configured": "Diese Zone ist bereits konfiguriert."
+      },
+      "error": {
+        "zone_not_found": "Die ausgewählte Zone wurde nicht gefunden."
+      },
+      "step": {
+        "add_location": {
+          "data": {
+            "zone": "Zone",
+            "name": "Name (optional, überschreibt Zonenname)",
+            "latitude": "Breitengrad (optional, überschreibt Zone)",
+            "longitude": "Längengrad (optional, überschreibt Zone)"
+          },
+          "description": "Wähle eine Home Assistant Zone als Basis-Standort. Du kannst optional Name und Koordinaten überschreiben."
+        },
+        "reconfigure_location": {
+          "data": {
+            "zone": "Zone",
+            "name": "Name (optional, überschreibt Zonenname)",
+            "latitude": "Breitengrad (optional, überschreibt Zone)",
+            "longitude": "Längengrad (optional, überschreibt Zone)"
+          },
+          "description": "Ändere die Zone oder überschreibe Name und Koordinaten."
+        }
+      }
+    }
+  }
 }
