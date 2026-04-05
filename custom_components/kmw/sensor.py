@@ -12,7 +12,6 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import (
     PERCENTAGE,
-    EntityCategory,
     UnitOfLength,
     UnitOfPressure,
     UnitOfSpeed,
@@ -43,96 +42,96 @@ class KmwCurrentSensorDescription(SensorEntityDescription):
 CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_temp",
-        translation_key="current_temp",
+        name="Temperatur (aktuell)",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         api_field="temp",
     ),
     KmwCurrentSensorDescription(
         key="current_dewpoint",
-        translation_key="current_dewpoint",
+        name="Taupunkt (aktuell)",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         api_field="dewpoint",
     ),
     KmwCurrentSensorDescription(
         key="current_humidity",
-        translation_key="current_humidity",
+        name="Luftfeuchte (aktuell)",
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
         api_field="humidityRelative",
     ),
     KmwCurrentSensorDescription(
         key="current_prec1h",
-        translation_key="current_precip",
+        name="Niederschlag 1h (aktuell)",
         native_unit_of_measurement="mm",
         api_field="prec1h",
     ),
     KmwCurrentSensorDescription(
         key="current_pressure",
-        translation_key="current_pressure",
+        name="Luftdruck (aktuell)",
         device_class=SensorDeviceClass.ATMOSPHERIC_PRESSURE,
         native_unit_of_measurement=UnitOfPressure.HPA,
         api_field="pressureMsl",
     ),
     KmwCurrentSensorDescription(
         key="current_sunhours",
-        translation_key="current_sunhours",
+        name="Sonnenstunden (aktuell)",
         native_unit_of_measurement="h",
         api_field="sunHours",
     ),
     KmwCurrentSensorDescription(
         key="current_cloudcoverage",
-        translation_key="current_cloudcoverage",
+        name="Bewölkung (aktuell)",
         native_unit_of_measurement=PERCENTAGE,
         api_field="cloudCoverage",
     ),
     KmwCurrentSensorDescription(
         key="current_snowamount",
-        translation_key="current_snowamount",
+        name="Schneemenge (aktuell)",
         native_unit_of_measurement="mm",
         api_field="snowAmount",
     ),
     KmwCurrentSensorDescription(
         key="current_snowheight",
-        translation_key="current_snowheight",
+        name="Schneehöhe (aktuell)",
         device_class=SensorDeviceClass.DISTANCE,
         native_unit_of_measurement=UnitOfLength.MILLIMETERS,
         api_field="snowHeight",
     ),
     KmwCurrentSensorDescription(
         key="current_windspeed",
-        translation_key="current_windspeed",
+        name="Windgeschwindigkeit (aktuell)",
         device_class=SensorDeviceClass.WIND_SPEED,
         native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
         api_field="windSpeed",
     ),
     KmwCurrentSensorDescription(
         key="current_winddir",
-        translation_key="current_winddir",
+        name="Windrichtung (aktuell)",
         native_unit_of_measurement="°",
         api_field="windDirection",
     ),
     KmwCurrentSensorDescription(
         key="current_windgust",
-        translation_key="current_windgust",
+        name="Windböe (aktuell)",
         device_class=SensorDeviceClass.WIND_SPEED,
         native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
         api_field="windGust",
     ),
     KmwCurrentSensorDescription(
         key="current_weathersymbol",
-        translation_key="current_weathersymbol",
+        name="Wettersymbol (aktuell)",
         api_field="weatherSymbol",
     ),
     KmwCurrentSensorDescription(
         key="current_wmocode",
-        translation_key="current_wmocode",
+        name="WMO-Code (aktuell)",
         api_field="wmoCode",
     ),
     KmwCurrentSensorDescription(
         key="current_isday",
-        translation_key="current_isday",
+        name="Tag/Nacht (aktuell)",
         api_field="isDay",
     ),
 )
@@ -145,24 +144,23 @@ async def async_setup_entry(
 ) -> None:
     """Set up sensors from a config entry."""
     runtime_data: KmwRuntimeData = config_entry.runtime_data
-    sensors: list[SensorEntity] = []
 
     for subentry_id, coordinator in runtime_data.coordinators.items():
         device_info = coordinator.device_info
-        sensors.append(KmwTempMaxSensor(coordinator, subentry_id, device_info))
-        sensors.append(KmwRiskSensor(coordinator, subentry_id, device_info))
-        sensors.extend(
-            KmwCurrentSensor(coordinator, subentry_id, device_info, desc)
-            for desc in CURRENT_SENSOR_DESCRIPTIONS
-        )
-
-    async_add_entities(sensors)
+        sensors: list[SensorEntity] = [
+            KmwTempMaxSensor(coordinator, subentry_id, device_info),
+            KmwRiskSensor(coordinator, subentry_id, device_info),
+            *[
+                KmwCurrentSensor(coordinator, subentry_id, device_info, desc)
+                for desc in CURRENT_SENSOR_DESCRIPTIONS
+            ],
+        ]
+        async_add_entities(sensors, config_subentry_id=subentry_id)
 
 
 class KmwBaseSensor(CoordinatorEntity[KmwDataUpdateCoordinator], SensorEntity):
     """Base class for KMW sensors with device_info and auto-updates."""
 
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_has_entity_name = True
 
     def __init__(
@@ -211,7 +209,7 @@ class KmwTempMaxSensor(KmwBaseSensor):
 
     _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
-    _attr_translation_key = "tempmax"
+    _attr_name = "Tageshöchsttemperatur"
 
     def __init__(
         self,
@@ -235,7 +233,7 @@ class KmwTempMaxSensor(KmwBaseSensor):
 class KmwRiskSensor(KmwBaseSensor):
     """Sensor for risks from daily forecast."""
 
-    _attr_translation_key = "risk"
+    _attr_name = "Risiken"
 
     def __init__(
         self,

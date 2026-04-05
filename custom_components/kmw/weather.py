@@ -101,19 +101,12 @@ async def async_setup_entry(
 ) -> None:
     """Add weather entities from a config_entry."""
     runtime_data: KmwRuntimeData = config_entry.runtime_data
-    entities: list[KachelmannWeather] = []
 
     for subentry_id, coordinator in runtime_data.coordinators.items():
-        entities.append(
-            KachelmannWeather(
-                hass,
-                coordinator,
-                subentry_id,
-                config_entry,
-            )
+        async_add_entities(
+            [KachelmannWeather(hass, coordinator, subentry_id, config_entry)],
+            config_subentry_id=subentry_id,
         )
-
-    async_add_entities(entities)
 
 
 class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]):

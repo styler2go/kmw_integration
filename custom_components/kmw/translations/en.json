@@ -10,7 +10,8 @@
     "step": {
       "user": {
         "data": {
-          "api_key": "API Key"
+          "api_key": "API Key",
+          "name": "Name"
         },
         "description": "This integration fetches weather data from the Kachelmann Wetter API service. Enter your API key below. After setup, add locations as devices."
       }
@@ -20,6 +21,7 @@
     "step": {
       "init": {
         "data": {
+          "name": "Name",
           "current_weather": "Which data shall be used as the current weather?",
           "forecast": "Do you want to have forecast data (recommended)?",
           "model": "Forecast model"

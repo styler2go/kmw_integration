@@ -47,8 +47,9 @@ class KmwFlowHandler(ConfigFlow, domain=DOMAIN):
         errors = {}
 
         if user_input is not None:
+            title = user_input.get(CONF_NAME) or "Kachelmann Wetter"
             return self.async_create_entry(
-                title="Kachelmann Wetter",
+                title=title,
                 data={
                     CONF_API_KEY: user_input[CONF_API_KEY],
                     CONF_MODEL: CONF_MODEL_DEFAULT,
@@ -62,6 +63,7 @@ class KmwFlowHandler(ConfigFlow, domain=DOMAIN):
         schema = vol.Schema(
             {
                 vol.Required(CONF_API_KEY): cv.string,
+                vol.Optional(CONF_NAME, default="Kachelmann Wetter"): cv.string,
             }
         )
 
@@ -72,10 +74,10 @@ class KmwFlowHandler(ConfigFlow, domain=DOMAIN):
     @staticmethod
     @callback
     def async_get_options_flow(
-        config_entry: ConfigEntry,
+        config_entry: ConfigEntry,  # noqa: ARG004
     ) -> OptionsFlow:
         """Create the options flow."""
-        return KmwOptionsFlowHandler(config_entry)
+        return KmwOptionsFlowHandler()
 
     @classmethod
     @callback
@@ -90,19 +92,24 @@ class KmwFlowHandler(ConfigFlow, domain=DOMAIN):
 class KmwOptionsFlowHandler(OptionsFlow):
     """Options flow for Kachelmann Wetter component."""
 
-    def __init__(self, config_entry: ConfigEntry) -> None:
-        """Initialize options flow."""
-        self.config_entry = config_entry
-
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Handle options flow."""
         if user_input is not None:
+            new_title = user_input.pop(CONF_NAME, None)
+            if new_title:
+                self.hass.config_entries.async_update_entry(
+                    self.config_entry, title=new_title
+                )
             return self.async_create_entry(title="", data=user_input)
 
         schema = vol.Schema(
             {
+                vol.Optional(
+                    CONF_NAME,
+                    default=self.config_entry.title,
+                ): cv.string,
                 vol.Required(
                     CONF_CURRENT_WEATHER,
                     default=self.config_entry.options.get(

@@ -10,7 +10,8 @@
     "step": {
       "user": {
         "data": {
-          "api_key": "API-Schlüssel"
+          "api_key": "API-Schlüssel",
+          "name": "Name"
         },
         "description": "Diese Integration ruft Wetterdaten von der Kachelmann Wetter API ab. Gib unten deinen API-Schlüssel ein. Nach dem Einrichten kannst du Standorte als Geräte hinzufügen."
       }
@@ -20,6 +21,7 @@
     "step": {
       "init": {
         "data": {
+          "name": "Name",
           "current_weather": "Welche Daten sollen als aktuelles Wetter verwendet werden?",
           "forecast": "Möchtest du Vorhersagen (empfohlen)?",
           "model": "Vorhersagemodell"

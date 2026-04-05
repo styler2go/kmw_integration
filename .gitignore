@@ -17,4 +17,5 @@ coverage.xml
 
 # Home Assistant configuration
 config/*
-!config/configuration.yaml
+!config/configuration.yamlhome-assistant_*.log
+tools.yaml
