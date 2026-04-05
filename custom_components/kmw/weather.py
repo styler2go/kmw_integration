@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import math
 from enum import Enum
 from typing import TYPE_CHECKING, Any
 
@@ -207,6 +208,23 @@ class KachelmannWeather(SingleCoordinatorWeatherEntity[KmwDataUpdateCoordinator]
             return None
 
         return temp["value"]
+
+    @property
+    def native_apparent_temperature(self) -> float | None:
+        """Return the apparent temperature (Australian BOM formula)."""
+        current_day_data = self._get_current_data()
+        if not current_day_data:
+            return None
+
+        ta = current_day_data.get("temp", {}).get("value")
+        rh = current_day_data.get("humidityRelative", {}).get("value")
+        v = current_day_data.get("windSpeed", {}).get("value")
+        if ta is None or rh is None or v is None:
+            return None
+
+        # Water vapour pressure (hPa)
+        e = (rh / 100) * 6.105 * math.exp(17.27 * ta / (237.7 + ta))
+        return round(ta + 0.33 * e - 0.7 * v - 4.0, 1)
 
     @property
     def native_pressure(self) -> float | None:

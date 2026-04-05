@@ -8,6 +8,7 @@ Mit dieser Integration kannst du Wetterdaten von Kachelmann Wetter direkt in Hom
 - **Geraete-Zuordnung:** Alle Entities (Wetter + Sensoren) sind jetzt einem Device zugeordnet und erscheinen gruppiert in der UI.
 - **Parallele API-Aufrufe:** Alle 4 API-Endpoints werden gleichzeitig abgefragt (~900ms schneller pro Zyklus).
 - **Benennbar:** Integration und Standorte koennen frei benannt werden.
+- **Gefuehlte Temperatur:** Berechnung nach Australian Bureau of Meteorology Formel (Temperatur + Luftfeuchte + Wind).
 - **Icon:** Kachelmann Wetter Logo als Integrations-Icon.
 - **Migration:** Bestehende V1-Eintraege werden automatisch auf V2 migriert. Entities, History und Dashboards bleiben erhalten.
 
