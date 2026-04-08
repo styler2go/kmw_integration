@@ -2,6 +2,9 @@
 
 Mit dieser Integration kannst du Wetterdaten von Kachelmann Wetter direkt in Home Assistant nutzen – inklusive 14-Tage-Vorhersage und aktuellem Wetter.
 
+## Patch Notes (2026-04-08)
+- Passende Icons fuer alle Sensoren hinzugefügt.
+
 ## Patch Notes (2026-04-05)
 - **Multi-Standort:** Mehrere Wetterstandorte pro API Key moeglich (1 Integration = 1 API Key, N Standorte).
 - **Zone Selector:** Standorte werden ueber Home Assistant Zonen hinzugefuegt, mit optionalem Override fuer Name und Koordinaten.

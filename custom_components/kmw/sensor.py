@@ -43,6 +43,7 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_temp",
         name="Temperatur (aktuell)",
+        icon="mdi:thermometer",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         api_field="temp",
@@ -50,6 +51,7 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_dewpoint",
         name="Taupunkt (aktuell)",
+        icon="mdi:thermometer",
         device_class=SensorDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         api_field="dewpoint",
@@ -57,6 +59,7 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_humidity",
         name="Luftfeuchte (aktuell)",
+        icon="mdi:water-percent",
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
         api_field="humidityRelative",
@@ -64,12 +67,14 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_prec1h",
         name="Niederschlag 1h (aktuell)",
+        icon="mdi:weather-rainy",
         native_unit_of_measurement="mm",
         api_field="prec1h",
     ),
     KmwCurrentSensorDescription(
         key="current_pressure",
         name="Luftdruck (aktuell)",
+        icon="mdi:gauge",
         device_class=SensorDeviceClass.ATMOSPHERIC_PRESSURE,
         native_unit_of_measurement=UnitOfPressure.HPA,
         api_field="pressureMsl",
@@ -77,24 +82,28 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_sunhours",
         name="Sonnenstunden (aktuell)",
+        icon="mdi:weather-sunny",
         native_unit_of_measurement="h",
         api_field="sunHours",
     ),
     KmwCurrentSensorDescription(
         key="current_cloudcoverage",
         name="Bewölkung (aktuell)",
+        icon="mdi:cloud",
         native_unit_of_measurement=PERCENTAGE,
         api_field="cloudCoverage",
     ),
     KmwCurrentSensorDescription(
         key="current_snowamount",
         name="Schneemenge (aktuell)",
+        icon="mdi:weather-snowy",
         native_unit_of_measurement="mm",
         api_field="snowAmount",
     ),
     KmwCurrentSensorDescription(
         key="current_snowheight",
         name="Schneehöhe (aktuell)",
+        icon="mdi:ruler",
         device_class=SensorDeviceClass.DISTANCE,
         native_unit_of_measurement=UnitOfLength.MILLIMETERS,
         api_field="snowHeight",
@@ -102,6 +111,7 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_windspeed",
         name="Windgeschwindigkeit (aktuell)",
+        icon="mdi:weather-windy",
         device_class=SensorDeviceClass.WIND_SPEED,
         native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
         api_field="windSpeed",
@@ -109,12 +119,14 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_winddir",
         name="Windrichtung (aktuell)",
+        icon="mdi:compass",
         native_unit_of_measurement="°",
         api_field="windDirection",
     ),
     KmwCurrentSensorDescription(
         key="current_windgust",
         name="Windböe (aktuell)",
+        icon="mdi:weather-windy-variant",
         device_class=SensorDeviceClass.WIND_SPEED,
         native_unit_of_measurement=UnitOfSpeed.METERS_PER_SECOND,
         api_field="windGust",
@@ -122,16 +134,19 @@ CURRENT_SENSOR_DESCRIPTIONS: tuple[KmwCurrentSensorDescription, ...] = (
     KmwCurrentSensorDescription(
         key="current_weathersymbol",
         name="Wettersymbol (aktuell)",
+        icon="mdi:weather-partly-cloudy",
         api_field="weatherSymbol",
     ),
     KmwCurrentSensorDescription(
         key="current_wmocode",
         name="WMO-Code (aktuell)",
+        icon="mdi:code-tags",
         api_field="wmoCode",
     ),
     KmwCurrentSensorDescription(
         key="current_isday",
         name="Tag/Nacht (aktuell)",
+        icon="mdi:weather-sunset-up",
         api_field="isDay",
     ),
 )
@@ -208,6 +223,7 @@ class KmwTempMaxSensor(KmwBaseSensor):
     """Sensor for max temperature from daily forecast."""
 
     _attr_device_class = SensorDeviceClass.TEMPERATURE
+    _attr_icon = "mdi:thermometer-high"
     _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
     _attr_name = "Tageshöchsttemperatur"
 
@@ -233,6 +249,7 @@ class KmwTempMaxSensor(KmwBaseSensor):
 class KmwRiskSensor(KmwBaseSensor):
     """Sensor for risks from daily forecast."""
 
+    _attr_icon = "mdi:alert"
     _attr_name = "Risiken"
 
     def __init__(
