@@ -1,6 +1,5 @@
 """Constants for Kachelmann Wetter component."""
 
-import logging
 from datetime import timedelta
 
 from homeassistant.components.weather import (
@@ -102,5 +101,3 @@ KMW_TOD_EVENING = "evening"
 
 SOURCE_STATIONSLEXIKON = 0
 SOURCE_MOSMIX_STATIONSKATALOG = 1
-
-_LOGGER = logging.getLogger(__name__)

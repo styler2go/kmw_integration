@@ -92,9 +92,28 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
         headers = {"Accept": "application/json", "X-API-Key": self._api_key}
         response = await self._clientsession.get(url, headers=headers)
         if self.HTTP_OK <= response.status <= self.HTTP_OK_MAX:
+            _LOGGER.debug(
+                "API success [%s] %s for %s",
+                response.status,
+                url,
+                self._location_name,
+            )
             return await response.json(content_type=None)
+
+        response_text = await response.text()
+        _LOGGER.warning(
+            "API error %s for %s (location: %s): %s",
+            response.status,
+            url,
+            self._location_name,
+            response_text[:500],
+        )
+
         if raise_on_error:
-            msg = f"Unexpected status code {response.status} from {url}."
+            msg = (
+                f"Unexpected status code {response.status} from {url}: "
+                f"{response_text[:500]}"
+            )
             raise UpdateFailed(msg)
         return None
 
@@ -106,6 +125,10 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
             )
 
             if not conf_forecast:
+                _LOGGER.debug(
+                    "Forecast disabled for %s, skipping update",
+                    self._location_name,
+                )
                 return {
                     "forecast": None,
                     "forecast_hourly": None,
@@ -115,6 +138,14 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
 
             lat = self._latitude
             lon = self._longitude
+
+            _LOGGER.debug(
+                "Fetching data for %s (%s, %s)",
+                self._location_name,
+                lat,
+                lon,
+            )
+
             (
                 forecast_data,
                 forecast_hourly,
@@ -136,7 +167,20 @@ class KmwDataUpdateCoordinator(DataUpdateCoordinator):
                 ),
             )
 
+            _LOGGER.debug(
+                "Data fetched for %s: forecast=%s, hourly=%s, hourly_3h=%s, current=%s",
+                self._location_name,
+                forecast_data is not None,
+                forecast_hourly is not None,
+                forecast_hourly_3h is not None,
+                current_weather is not None,
+            )
+
         except Exception as err:
+            _LOGGER.exception(
+                "Update failed for %s",
+                self._location_name,
+            )
             raise UpdateFailed(err) from err
         else:
             return {

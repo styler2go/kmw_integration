@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
@@ -21,6 +22,8 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import KMW_FORECAST_DATA, KMW_TEMPERATURE_MAX
 from .coordinator import KmwDataUpdateCoordinator
+
+_LOGGER = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -210,13 +213,26 @@ class KmwCurrentSensor(KmwBaseSensor):
     def available(self) -> bool:
         """Return True if current data is available."""
         current = self.coordinator.data.get("current")
-        return current is not None and "data" in current
+        available = current is not None and "data" in current
+        if not available:
+            _LOGGER.debug(
+                "Current weather data not available for %s",
+                self.coordinator.location_name,
+            )
+        return available
 
     @property
     def native_value(self) -> Any | None:
         """Return the sensor value from the current weather data."""
         data = self.coordinator.data.get("current", {}).get("data", {})
-        return data.get(self.entity_description.api_field, {}).get("value")
+        value = data.get(self.entity_description.api_field, {}).get("value")
+        if value is None:
+            _LOGGER.debug(
+                "Field '%s' not found in current data for %s",
+                self.entity_description.api_field,
+                self.coordinator.location_name,
+            )
+        return value
 
 
 class KmwTempMaxSensor(KmwBaseSensor):
@@ -243,6 +259,10 @@ class KmwTempMaxSensor(KmwBaseSensor):
         forecast = self.coordinator.data.get("forecast")
         if forecast and forecast.get(KMW_FORECAST_DATA):
             return forecast[KMW_FORECAST_DATA][0].get(KMW_TEMPERATURE_MAX)
+        _LOGGER.debug(
+            "Forecast data not available for temperature max at %s",
+            self.coordinator.location_name,
+        )
         return None
 
 
@@ -270,6 +290,10 @@ class KmwRiskSensor(KmwBaseSensor):
             risks = forecast[KMW_FORECAST_DATA][0].get("risks", [])
             if risks:
                 return ", ".join(r.get("type", "") for r in risks)
+            _LOGGER.debug(
+                "No risks in forecast data for %s",
+                self.coordinator.location_name,
+            )
         return None
 
     @property
