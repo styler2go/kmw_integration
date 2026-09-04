@@ -57,6 +57,7 @@ CONDITIONS_MAP = {
     "partlycloudy": ATTR_CONDITION_PARTLYCLOUDY,
     "showersheavy": ATTR_CONDITION_POURING,
     "showers_moderate": ATTR_CONDITION_RAINY,
+    "showers": ATTR_CONDITION_RAINY,
     "snow": ATTR_CONDITION_SNOWY,
     "snowrain": ATTR_CONDITION_SNOWY_RAINY,
     "sunshine": ATTR_CONDITION_SUNNY,
